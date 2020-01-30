@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-01-30T17:29:43" hostname="n180-p187.eduroam.kth.se" time="0.005">
-  <properties/>
-  <testcase name="test1" classname="TestClass" time="0.005"/>
-  <system-out><![CDATA[Test 1 works
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
