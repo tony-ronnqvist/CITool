@@ -1,4 +1,4 @@
 language: java
-
+install: gradle wrapper --gradle-version 4.2
 script:
   - ./gradlew build
