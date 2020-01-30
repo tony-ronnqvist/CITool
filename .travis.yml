@@ -1,4 +1,4 @@
 language: java
-install: gradle wrapper --gradle-version 4.2
+jdk: oraclejdk8
 script:
   - ./gradlew build
