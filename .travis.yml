@@ -1,8 +1,6 @@
 language: java
 
-  matrix:
-    - JOB="./gradlew build"
+before_script: cd CITool
 
-script: "$JOB"
-
-
+script:
+  - ./gradlew build
