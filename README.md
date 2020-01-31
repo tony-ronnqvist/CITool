@@ -1,2 +1,0 @@
-# CITool
-Continuous Integration tool
