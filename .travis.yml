@@ -1,7 +1,1 @@
 language: java
-
-before_script: cd CITool
-
-script:
-  - ./gradlew build
-
