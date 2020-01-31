@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-01-30T19:45:58" hostname="n180-p187.eduroam.kth.se" time="0.004">
+<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-01-31T09:48:44" hostname="n166-p209.eduroam.kth.se" time="0.005">
   <properties/>
-  <testcase name="test1" classname="TestClass" time="0.004"/>
+  <testcase name="test1" classname="TestClass" time="0.005"/>
   <system-out><![CDATA[Test 1 works
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
