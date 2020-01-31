@@ -165,9 +165,9 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.CITool [test]" />
-      <item itemvalue="JUnit.TestClass.test1" />
       <item itemvalue="Gradle.TestClass" />
       <item itemvalue="Gradle.TestClass.test1" />
+      <item itemvalue="JUnit.TestClass.test1" />
     </list>
     <recent_temporary>
       <list>
@@ -191,7 +191,7 @@
       <workItem from="1580379581672" duration="38000" />
       <workItem from="1580379624463" duration="15464000" />
       <workItem from="1580461822084" duration="1844000" />
-      <workItem from="1580463859453" duration="900000" />
+      <workItem from="1580463859453" duration="1158000" />
     </task>
     <servers />
   </component>
