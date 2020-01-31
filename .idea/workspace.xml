@@ -7,6 +7,20 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -24,17 +38,6 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="CITool" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="CITool" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="CITool" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="verification" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -61,7 +64,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="RunManager" selected="Application.CIServer">
     <configuration name="CIServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -107,7 +116,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580471275074</updated>
-      <workItem from="1580471276748" duration="740000" />
+      <workItem from="1580471276748" duration="2204000" />
     </task>
     <servers />
   </component>
@@ -123,29 +132,33 @@
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state x="177" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.806@0.23.1440.806" timestamp="1580471459396" />
-    <state width="1358" height="194" key="GridCell.Tab.0.bottom" timestamp="1580472014250">
+    <state width="1358" height="194" key="GridCell.Tab.0.bottom" timestamp="1580473044751">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1358" height="194" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1580472014250" />
-    <state width="1358" height="194" key="GridCell.Tab.0.center" timestamp="1580472014249">
+    <state width="1358" height="194" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1580473044751" />
+    <state width="1358" height="194" key="GridCell.Tab.0.center" timestamp="1580473044750">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1358" height="194" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1580472014249" />
-    <state width="1358" height="194" key="GridCell.Tab.0.left" timestamp="1580472014249">
+    <state width="1358" height="194" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1580473044750" />
+    <state width="1358" height="194" key="GridCell.Tab.0.left" timestamp="1580473044749">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1358" height="194" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1580472014249" />
-    <state width="1358" height="194" key="GridCell.Tab.0.right" timestamp="1580472014249">
+    <state width="1358" height="194" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1580473044749" />
+    <state width="1358" height="194" key="GridCell.Tab.0.right" timestamp="1580473044750">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state width="1358" height="194" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1580472014249" />
+    <state width="1358" height="194" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1580473044750" />
     <state x="251" y="68" key="Maven.ArtifactSearchDialog" timestamp="1580471443864">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state x="251" y="68" key="Maven.ArtifactSearchDialog/0.23.1440.806@0.23.1440.806" timestamp="1580471443864" />
-    <state x="222" y="45" key="SettingsEditor" timestamp="1580471302468">
+    <state x="222" y="45" key="SettingsEditor" timestamp="1580473035011">
       <screen x="0" y="23" width="1440" height="806" />
     </state>
-    <state x="222" y="45" key="SettingsEditor/0.23.1440.806@0.23.1440.806" timestamp="1580471302468" />
+    <state x="222" y="45" key="SettingsEditor/0.23.1440.806@0.23.1440.806" timestamp="1580473035011" />
+    <state x="378" y="183" width="670" height="675" key="run.anything.popup" timestamp="1580473028880">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state x="378" y="183" width="670" height="675" key="run.anything.popup/0.23.1440.806@0.23.1440.806" timestamp="1580473028880" />
   </component>
 </project>
