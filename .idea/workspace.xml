@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3fb776a9-1788-4ac7-986b-1b2378697f93" name="Default Changelist" comment="" />
+    <list default="true" id="3fb776a9-1788-4ac7-986b-1b2378697f93" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CIServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CIServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestClass.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,6 +67,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1X9vlTbMcDA6EoxYNAM2xCrg06l" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -64,6 +81,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -99,9 +117,30 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="TestClass.test1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;TestClass.test1&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.CITool [test]" />
+        <item itemvalue="Gradle.TestClass.test1" />
         <item itemvalue="Application.CIServer" />
       </list>
     </recent_temporary>
@@ -116,7 +155,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580471275074</updated>
-      <workItem from="1580471276748" duration="2204000" />
+      <workItem from="1580471276748" duration="2817000" />
+      <workItem from="1580748465573" duration="185000" />
     </task>
     <servers />
   </component>
@@ -132,26 +172,35 @@
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state x="177" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.806@0.23.1440.806" timestamp="1580471459396" />
-    <state width="1358" height="194" key="GridCell.Tab.0.bottom" timestamp="1580473044751">
-      <screen x="0" y="23" width="1440" height="806" />
+    <state width="1358" height="192" key="GridCell.Tab.0.bottom" timestamp="1580748789976">
+      <screen x="0" y="23" width="1440" height="811" />
     </state>
     <state width="1358" height="194" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1580473044751" />
-    <state width="1358" height="194" key="GridCell.Tab.0.center" timestamp="1580473044750">
-      <screen x="0" y="23" width="1440" height="806" />
+    <state width="1358" height="194" key="GridCell.Tab.0.bottom/0.23.1440.808@0.23.1440.808" timestamp="1580493383728" />
+    <state width="1358" height="192" key="GridCell.Tab.0.bottom/0.23.1440.811@0.23.1440.811" timestamp="1580748789976" />
+    <state width="1358" height="192" key="GridCell.Tab.0.center" timestamp="1580748789975">
+      <screen x="0" y="23" width="1440" height="811" />
     </state>
     <state width="1358" height="194" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1580473044750" />
-    <state width="1358" height="194" key="GridCell.Tab.0.left" timestamp="1580473044749">
-      <screen x="0" y="23" width="1440" height="806" />
+    <state width="1358" height="194" key="GridCell.Tab.0.center/0.23.1440.808@0.23.1440.808" timestamp="1580493383727" />
+    <state width="1358" height="192" key="GridCell.Tab.0.center/0.23.1440.811@0.23.1440.811" timestamp="1580748789975" />
+    <state width="1358" height="192" key="GridCell.Tab.0.left" timestamp="1580748789975">
+      <screen x="0" y="23" width="1440" height="811" />
     </state>
     <state width="1358" height="194" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1580473044749" />
-    <state width="1358" height="194" key="GridCell.Tab.0.right" timestamp="1580473044750">
-      <screen x="0" y="23" width="1440" height="806" />
+    <state width="1358" height="194" key="GridCell.Tab.0.left/0.23.1440.808@0.23.1440.808" timestamp="1580493383727" />
+    <state width="1358" height="192" key="GridCell.Tab.0.left/0.23.1440.811@0.23.1440.811" timestamp="1580748789975" />
+    <state width="1358" height="192" key="GridCell.Tab.0.right" timestamp="1580748789976">
+      <screen x="0" y="23" width="1440" height="811" />
     </state>
     <state width="1358" height="194" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1580473044750" />
-    <state x="251" y="68" key="Maven.ArtifactSearchDialog" timestamp="1580471443864">
-      <screen x="0" y="23" width="1440" height="806" />
+    <state width="1358" height="194" key="GridCell.Tab.0.right/0.23.1440.808@0.23.1440.808" timestamp="1580493383728" />
+    <state width="1358" height="192" key="GridCell.Tab.0.right/0.23.1440.811@0.23.1440.811" timestamp="1580748789976" />
+    <state x="251" y="68" key="Maven.ArtifactSearchDialog" timestamp="1580748571928">
+      <screen x="0" y="23" width="1440" height="811" />
     </state>
     <state x="251" y="68" key="Maven.ArtifactSearchDialog/0.23.1440.806@0.23.1440.806" timestamp="1580471443864" />
+    <state x="251" y="68" key="Maven.ArtifactSearchDialog/0.23.1440.811@0.23.1440.811" timestamp="1580748571928" />
     <state x="222" y="45" key="SettingsEditor" timestamp="1580473035011">
       <screen x="0" y="23" width="1440" height="806" />
     </state>

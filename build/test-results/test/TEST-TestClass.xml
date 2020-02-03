@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-01-31T11:52:23" hostname="n166-p209.eduroam.kth.se" time="0.005">
+<testsuite name="TestClass" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-02-03T16:53:10" hostname="n164-p222.eduroam.kth.se" time="0.098">
   <properties/>
-  <testcase name="test1" classname="TestClass" time="0.005"/>
+  <testcase name="testGetJsonFromRequest" classname="TestClass" time="0.04"/>
+  <testcase name="testGetGitHubEventFromHeader" classname="TestClass" time="0.003"/>
+  <testcase name="test1" classname="TestClass" time="0.004"/>
+  <testcase name="testGetCommitId" classname="TestClass" time="0.051"/>
   <system-out><![CDATA[Test 1 works
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
