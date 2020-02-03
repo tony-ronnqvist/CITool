@@ -16,4 +16,8 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-server:9.4.25.v20191220'
     compile 'com.google.code.gson:gson:2.8.6'
     compile 'org.springframework:spring-test:5.2.2.RELEASE'
+    implementation 'com.google.firebase:firebase-admin:6.12.1'
+
+    compile 'org.slf4j:slf4j-api:1.7.30'
+    compile 'org.slf4j:slf4j-simple:1.7.30'
 }

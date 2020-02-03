@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="3fb776a9-1788-4ac7-986b-1b2378697f93" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
@@ -16,11 +17,15 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/CIServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CIServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/TestClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestClass.java" afterDir="false" />
     </list>
+=======
+    <list default="true" id="3fb776a9-1788-4ac7-986b-1b2378697f93" name="Default Changelist" comment="" />
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
     <option name="GROUP_DATA_SOURCES" value="true" />
@@ -35,6 +40,8 @@
     <expand />
     <select />
   </component>
+=======
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -67,9 +74,12 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+=======
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
   <component name="ProjectId" id="1X9vlTbMcDA6EoxYNAM2xCrg06l" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -81,6 +91,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -89,6 +100,9 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+=======
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
   </component>
   <component name="RunManager" selected="Application.CIServer">
     <configuration name="CIServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -117,6 +131,7 @@
       <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
       <method v="2" />
     </configuration>
+<<<<<<< HEAD
     <configuration name="TestClass.test1" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -141,6 +156,11 @@
       <list>
         <item itemvalue="Gradle.CITool [test]" />
         <item itemvalue="Gradle.TestClass.test1" />
+=======
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.CITool [test]" />
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
         <item itemvalue="Application.CIServer" />
       </list>
     </recent_temporary>
@@ -155,8 +175,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580471275074</updated>
+<<<<<<< HEAD
       <workItem from="1580471276748" duration="2817000" />
       <workItem from="1580748465573" duration="185000" />
+=======
+      <workItem from="1580471276748" duration="740000" />
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
     </task>
     <servers />
   </component>
@@ -165,6 +189,7 @@
   </component>
   <component name="WindowStateProjectService">
     <state x="313" y="71" key="#Notifications" timestamp="1580471307218">
+<<<<<<< HEAD
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state x="313" y="71" key="#Notifications/0.23.1440.806@0.23.1440.806" timestamp="1580471307218" />
@@ -209,5 +234,38 @@
       <screen x="0" y="23" width="1440" height="806" />
     </state>
     <state x="378" y="183" width="670" height="675" key="run.anything.popup/0.23.1440.806@0.23.1440.806" timestamp="1580473028880" />
+=======
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state x="313" y="71" key="#Notifications/0.23.1440.806@0.23.1440.806" timestamp="1580471307218" />
+    <state x="177" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580471459396">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state x="177" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.806@0.23.1440.806" timestamp="1580471459396" />
+    <state width="1358" height="194" key="GridCell.Tab.0.bottom" timestamp="1580472014250">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1358" height="194" key="GridCell.Tab.0.bottom/0.23.1440.806@0.23.1440.806" timestamp="1580472014250" />
+    <state width="1358" height="194" key="GridCell.Tab.0.center" timestamp="1580472014249">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1358" height="194" key="GridCell.Tab.0.center/0.23.1440.806@0.23.1440.806" timestamp="1580472014249" />
+    <state width="1358" height="194" key="GridCell.Tab.0.left" timestamp="1580472014249">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1358" height="194" key="GridCell.Tab.0.left/0.23.1440.806@0.23.1440.806" timestamp="1580472014249" />
+    <state width="1358" height="194" key="GridCell.Tab.0.right" timestamp="1580472014249">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state width="1358" height="194" key="GridCell.Tab.0.right/0.23.1440.806@0.23.1440.806" timestamp="1580472014249" />
+    <state x="251" y="68" key="Maven.ArtifactSearchDialog" timestamp="1580471443864">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state x="251" y="68" key="Maven.ArtifactSearchDialog/0.23.1440.806@0.23.1440.806" timestamp="1580471443864" />
+    <state x="222" y="45" key="SettingsEditor" timestamp="1580471302468">
+      <screen x="0" y="23" width="1440" height="806" />
+    </state>
+    <state x="222" y="45" key="SettingsEditor/0.23.1440.806@0.23.1440.806" timestamp="1580471302468" />
+>>>>>>> 1dca16ea75fa952b59e5443447f1bda86d868a82
   </component>
 </project>
