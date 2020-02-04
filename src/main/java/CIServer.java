@@ -1,3 +1,9 @@
+import Firebase.Body;
+import Firebase.BuildResult;
+import Firebase.Database;
+import Firebase.PullRequest;
+import Firebase.User;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
@@ -10,7 +16,6 @@ import com.google.gson.Gson;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 
@@ -21,8 +26,6 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
@@ -66,20 +69,17 @@ public class CIServer extends AbstractHandler
 
 
 
-        // here you do all the continuous integration tasks
-        // for example
-        // 1st clone your repository
-        // 2nd compile the code
 
+        //Updating the database with new information
 
         updateDatabase(response);
 
-        response.getWriter().println("CI job done");
+      //  response.getWriter().println("CI job done");
     }
 
     public void updateDatabase(HttpServletResponse response) throws IOException {
 
-        // Comminutaions between server and firebase
+        // Commutations between server and firebase
         FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
@@ -91,15 +91,25 @@ public class CIServer extends AbstractHandler
         Firestore db = FirestoreClient.getFirestore();
 
 
-        HashMap<String, String> quote = new HashMap<String, String>();
-        quote.put("Name", "Christina");
-        quote.put("node_id", "MDExOlB1bGxSZXF1ZXN0MzY5OTA1MDgy");
+        //One example that needs to add to the classes.
+        PullRequest pullrequest = new PullRequest("https://github.com/repos/feluxz/CITEST/pulls/13","MDExOlB1bGxSZXF1ZXN0MzY5OTA1MDgy", "https://github.com/repos/feluxz/CITEST/issues/13", 13, "soijsfoij");
+
+        User user = new User("feluxz", "https://avatars0.githubusercontent.com/u/29494534?v=4");
+
+        Body body = new Body("2020-02-03T14:26:58Z");
+
+        BuildResult buildResult = new BuildResult(true, "Lorem ipsum");
+        //Done with example
 
 
-        String childPath = "inspo";
+        //This is what is sent to Firebase with set()
+        Database database = new Database(pullrequest, user, body, buildResult);
+
+        //This is the ID of the Pull_request.
+        String childPath = "369905082";
 
         //Sending a new uppdate
-        ApiFuture<WriteResult> future = db.collection("builds").document(childPath).set(quote);
+        ApiFuture<WriteResult> future = db.collection("builds").document(childPath).set(database);
         try {
             response.getWriter().println("Done: " + future.get().getUpdateTime());
         } catch (InterruptedException e) {
