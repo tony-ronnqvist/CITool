@@ -9,6 +9,43 @@ import java.util.Map;
 
 public final class JsonParser {
     /**
+     * Gets the sha from a "pull-request" json string
+     * @param jsonString
+     * @return String - containing full_name from github payload
+     */
+    public static String get_sha_pull_request(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+
+        //Create map of user object
+        Map map = gson.fromJson(jsonStringAsObject, Map.class);
+        //Return the full_name value
+        return (map.get("after") == null) ? "null" : map.get("after").toString();
+    }
+
+     /**
+     * Gets the clone_url from a "pull-request" json string
+     * @param jsonString
+     * @return String - containing clone_url from github payload
+     */
+    public static String get_clone_url(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the pull-request object
+        JsonObject pull_request = jsonStringAsObject.getAsJsonObject("pull_request");
+        //Extract the head object
+        JsonObject user = pull_request.getAsJsonObject("head");
+        //Extract the repo object
+        JsonObject repo = user.getAsJsonObject("repo");
+        //Create map of user object
+        Map map = gson.fromJson(repo, Map.class);
+        //Return the clone_url value
+        return (map.get("clone_url") == null) ? "null" : map.get("clone_url").toString();
+    }
+
+    /**
      * Gets the full_name from a "pull-request" json string
      * @param jsonString
      * @return String - containing full_name from github payload
