@@ -9,6 +9,22 @@ import java.util.Map;
 
 public final class JsonParser {
     /**
+     * Gets the sha from a "pull-request" json string
+     * @param jsonString
+     * @return String - containing full_name from github payload
+     */
+    public static String get_sha_pull_request(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+
+        //Create map of user object
+        Map map = gson.fromJson(jsonStringAsObject, Map.class);
+        //Return the full_name value
+        return (map.get("after") == null) ? "null" : map.get("after").toString();
+    }
+
+    /**
      * Gets the full_name from a "pull-request" json string
      * @param jsonString
      * @return String - containing full_name from github payload
