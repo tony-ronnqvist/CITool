@@ -126,5 +126,32 @@ public class ServerControl {
         newLog.close();
 
     }
+    /**
+     * Gives the shell and run & close command for the current operating system. Only checking for
+     * operating systems Linux, Windows and Mac; if not mac or windows assumes that it is Linux.
+     *
+     * @return String array - with the shell for the current os and the run and close setting
+     */
+    public static String[] getOsShell() {
+        String[] output = new String[3];
 
+        output[2] = System.getProperty("os.name");
+
+        //Check current operating system is Windows
+        if (output[2].startsWith("Windows")) {
+            output[0] = "Cmd.exe";
+            output[1] = "/c";
+
+        } else if (output[2].startsWith("Mac")) {
+            //else check if current operating system is Mac (Don't know if this works)
+            output[0] = "zsh";
+            output[1] = "-c";
+
+        } else {
+            //Else assume operating system is Linux
+            output[0] = "bash";
+            output[1] = "-c";
+        }
+        return output;
+    }
 }
