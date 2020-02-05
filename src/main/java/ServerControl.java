@@ -157,7 +157,7 @@ public class ServerControl {
         return output;
     }
 
-    public static String[] cloneAndBuild(String json) throws IOException {
+    public static String[] cloneAndBuildMac(String json) throws IOException {
 
         //Init shell for os
         String[] osShell;
@@ -171,46 +171,81 @@ public class ServerControl {
         osShell = getOsShell();
 
         //Sets which directory to clone to
-        String cloneDirectory = System.getProperty("user.dir");
 
         String[] result1; String[] result2; String[] result3; String[] result4;
+        String[] result5; String[] result6; String[] result7;
 
-        //Run git clone on git address and log output
-        result1 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "clone", gitAddress);
+        //Step1 :Change directory to outside project
+        result1 = runCommand(System.getProperty("user.dir"),  "cd", "..");
         logDataToFile(result1);
 
-        //If error; return error and not continue further commands
+        String folderRemoveDirectory = System.getProperty("user.dir");
+
+        //Step 1 ERROR: Return error and do not issue further commands
         if (!result1[0].equals("0")){
             return result1;
         }
-
-        //Run cd to git directory and log the output
-        result2 = runCommand(cloneDirectory, osShell[0], osShell[1], "cd", gitDirectory);
+        //Step 2: Make a temp directory for git clone and log data
+        result2 = runCommand(System.getProperty("user.dir"), "mkdir", "tempGitCloneCI");
         logDataToFile(result2);
 
-        //If error; return error and not continue further commands
+        //Step 2 ERROR: Return error and do not issue further commands
         if (!result2[0].equals("0")){
             return result2;
         }
 
-        //Run git checkout to the pushed branch and log the output
-        result3 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "checkout", gitId);
+        //Step 3: Change directory to temporary directory for git clone and log data
+        result3 = runCommand(System.getProperty("user.dir"),  "cd", "tempGitCloneCI");
         logDataToFile(result3);
 
-        //If error; return error and not continue further commands
+        //Step 3 ERROR: Remove folder, return error and do not issue further commands
         if (!result3[0].equals("0")){
+            runCommand(folderRemoveDirectory, "rm", "-r", "tempGitCloneCI");
             return result3;
         }
 
-        //Run ./gradlew build in current directory and se if code can build. Also logs the result
-        result4 = runCommand(cloneDirectory, osShell[0], osShell[1], "./gradlew", "build");
+        //Step 4: Run git clone to current temp directory and log data
+        result4 = runCommand(System.getProperty("user.dir"),  "git", "clone", gitAddress);
         logDataToFile(result4);
 
+        //Step 4 ERROR: Remove folder, return error and do not issue further commands
+        if (!result4[0].equals("0")){
+            runCommand(folderRemoveDirectory, "rm", "-r", "tempGitCloneCI");
+            return result4;
+        }
 
-        //Need to remove directory
-        //runCommand(cloneDirectory, osShell[0], osShell[1], "rm", "-r", gitDirectory);
+        //Change directory to the newly cloned directory
+        result5 = runCommand(System.getProperty("user.dir"),  "cd", gitDirectory);
+        logDataToFile(result5);
 
-        return result4;
+        //Step 5 ERROR: Remove folder, return error and do not issue further commands
+        if (!result5[0].equals("0")){
+            runCommand(folderRemoveDirectory, "rm", "-r", "tempGitCloneCI");
+            return result5;
+        }
+
+
+        result6 = runCommand(System.getProperty("user.dir"),  "git", "checkout", gitId);
+        logDataToFile(result6);
+
+        if (!result6[0].equals("0")){
+            runCommand(folderRemoveDirectory, "rm", "-r", "tempGitCloneCI");
+            return result6;
+        }
+
+        //Build the program in current directory
+        result7 = runCommand(System.getProperty("user.dir"),  "./gradlew", "build");
+        logDataToFile(result7);
+
+        if (!result7[0].equals("0")){
+            runCommand(folderRemoveDirectory, "rm", "-r", "tempGitCloneCI");
+            return result7;
+        }
+
+        //If all test succeeded then remove directory
+        runCommand(folderRemoveDirectory, "rm", "-r", "tempGitCloneCI");
+
+        return result7;
 
     }
 }
