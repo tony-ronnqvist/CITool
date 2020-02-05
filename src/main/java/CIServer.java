@@ -60,8 +60,7 @@ public class CIServer extends AbstractHandler
         Map map = gson.fromJson(jsonString, Map.class);
 
         if(headerValue.equals("push")){
-            System.out.println(map.get("ref"));
-            System.out.println("COMMIT: " + JsonParser.getCommitId(jsonString));
+
         }
         if(headerValue.equals("pull_request")){
             System.out.println(map.get("number"));
@@ -72,7 +71,7 @@ public class CIServer extends AbstractHandler
 
         //Updating the database with new information
 
-        updateDatabase(response);
+        //updateDatabase(response);
 
       //  response.getWriter().println("CI job done");
     }
