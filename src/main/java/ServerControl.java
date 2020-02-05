@@ -139,14 +139,14 @@ public class ServerControl {
 
         output[2] = System.getProperty("os.name");
 
-        //Check current operating system is Windows
+        //Check if current operating system is Windows
         if (output[2].startsWith("Windows")) {
             output[0] = "Cmd.exe";
             output[1] = "/c";
 
         } else if (output[2].startsWith("Mac")) {
             //else check if current operating system is Mac (Don't know if this works)
-            output[0] = "zsh";
+            output[0] = "bash";
             output[1] = "-c";
 
         } else {
@@ -159,7 +159,7 @@ public class ServerControl {
 
     public static String[] cloneAndBuild(String json) throws IOException {
 
-        //Init shell for os
+        //Init shell for os with command
         String[] osShell;
 
         //Get all required strings from JsonParser.
