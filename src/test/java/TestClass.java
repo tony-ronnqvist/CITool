@@ -372,7 +372,6 @@ public class TestClass {
             ApiFuture<DocumentSnapshot> future = docref.get();
             DocumentSnapshot document = future.get();
 
-           
 
             if (document.exists()) {
                 HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
