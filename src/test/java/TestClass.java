@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -336,7 +337,13 @@ public class TestClass {
          *Test to add a new collection to database. Then gets that collection and sees if it is the same.
          */
         // Commutations between server and firebase
-        FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
+        String path = System.getProperty("user.dir");
+        path+="/serviceAccountKey.json";
+
+        System.out.println(path);
+
+        FileInputStream serviceAccount = new FileInputStream(path);
+
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
