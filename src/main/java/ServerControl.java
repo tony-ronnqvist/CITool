@@ -157,12 +157,14 @@ public class ServerControl {
         return output;
     }
 
-    public static String[] CloneAndBuild(HttpServletRequest request) throws IOException {
+    public static String[] cloneAndBuild(String json) throws IOException {
+
+        //Init shell for os
         String[] osShell;
 
-        String json = JsonParser.getJsonFromRequest(request);
-        String gitAddress = JsonParser.get_url(json);
-        String gitId = JsonParser.get_commitId(json);
+        //Get all required strings from JsonParser.
+        String gitAddress = JsonParser.get_clone_url(json);
+        String gitId = JsonParser.get_sha_pull_request(json);
         String gitDirectory = JsonParser.get_full_name(json);
 
         //Get the shell for current os
@@ -173,26 +175,37 @@ public class ServerControl {
 
         String[] result1; String[] result2; String[] result3; String[] result4;
 
-
+        //Run git clone on git address and log output
         result1 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "clone", gitAddress);
+        logDataToFile(result1);
 
+        //If error; return error and not continue further commands
         if (!result1[0].equals("0")){
             return result1;
         }
 
+        //Run cd to git directory and log the output
         result2 = runCommand(cloneDirectory, osShell[0], osShell[1], "cd", gitDirectory);
+        logDataToFile(result2);
 
+        //If error; return error and not continue further commands
         if (!result2[0].equals("0")){
             return result2;
         }
 
+        //Run git checkout to the pushed branch and log the output
         result3 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "checkout", gitId);
+        logDataToFile(result3);
 
+        //If error; return error and not continue further commands
         if (!result3[0].equals("0")){
             return result3;
         }
 
+        //Run ./gradlew build in current directory and se if code can build. Also logs the result
         result4 = runCommand(cloneDirectory, osShell[0], osShell[1], "./gradlew", "build");
+        logDataToFile(result4);
+
 
         //Need to remove directory
         //runCommand(cloneDirectory, osShell[0], osShell[1], "rm", "-r", gitDirectory);
