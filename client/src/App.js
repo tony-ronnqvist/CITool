@@ -1,6 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 
-function App() {
+import firebase from "./util/firebase";
+
+const App = () => {
+
+  useEffect(() => {firebase.getBuilds()});
+
   return <div className="App"></div>;
 }
 
