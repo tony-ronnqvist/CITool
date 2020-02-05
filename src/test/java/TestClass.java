@@ -330,12 +330,12 @@ public class TestClass {
     }
 
 
-    @Test
+    /*@Test
     public void testUpdateDatabase() throws IOException {
 
-        /**
+        *//**
          *Test to add a new collection to database. Then gets that collection and sees if it is the same.
-         */
+         *//*
         // Commutations between server and firebase
         String path = System.getProperty("user.dir");
         path+="/serviceAccountKey.json";
@@ -406,7 +406,7 @@ public class TestClass {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
         /**
