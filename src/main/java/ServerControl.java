@@ -1,3 +1,4 @@
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -91,7 +92,7 @@ public class ServerControl {
      *
      * @param logData String array - first entry exit code and second entry error messages if any
      * @throws IOException -  if logfile exists but is a directory rather than a regular file,
-     * does not exist but cannot be created, or cannot be opened for any other reason
+     *                     does not exist but cannot be created, or cannot be opened for any other reason
      */
     public static void logDataToFile(String[] logData) throws IOException {
 
@@ -126,6 +127,7 @@ public class ServerControl {
         newLog.close();
 
     }
+
     /**
      * Gives the shell and run & close command for the current operating system. Only checking for
      * operating systems Linux, Windows and Mac; if not mac or windows assumes that it is Linux.
@@ -153,5 +155,49 @@ public class ServerControl {
             output[1] = "-c";
         }
         return output;
+    }
+
+    public static String[] CloneAndBuild(HttpServletRequest request) throws IOException {
+        String[] osShell;
+
+        String json = JsonParser.getJsonFromRequest(request);
+        String gitAddress = JsonParser.get_url(json);
+        String gitId = JsonParser.get_commitId(json);
+        String gitDirectory = JsonParser.get_full_name(json);
+
+        //Get the shell for current os
+        osShell = getOsShell();
+
+        //Sets which directory to clone to
+        String cloneDirectory = System.getProperty("user.dir");
+
+        String[] result1; String[] result2; String[] result3; String[] result4;
+
+
+        result1 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "clone", gitAddress);
+
+        if (!result1[0].equals("0")){
+            return result1;
+        }
+
+        result2 = runCommand(cloneDirectory, osShell[0], osShell[1], "cd", gitDirectory);
+
+        if (!result2[0].equals("0")){
+            return result2;
+        }
+
+        result3 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "checkout", gitId);
+
+        if (!result3[0].equals("0")){
+            return result3;
+        }
+
+        result4 = runCommand(cloneDirectory, osShell[0], osShell[1], "./gradlew", "build");
+
+        //Need to remove directory
+        //runCommand(cloneDirectory, osShell[0], osShell[1], "rm", "-r", gitDirectory);
+
+        return result4;
+
     }
 }
