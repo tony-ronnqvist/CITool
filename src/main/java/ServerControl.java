@@ -1,3 +1,4 @@
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -91,7 +92,7 @@ public class ServerControl {
      *
      * @param logData String array - first entry exit code and second entry error messages if any
      * @throws IOException -  if logfile exists but is a directory rather than a regular file,
-     * does not exist but cannot be created, or cannot be opened for any other reason
+     *                     does not exist but cannot be created, or cannot be opened for any other reason
      */
     public static void logDataToFile(String[] logData) throws IOException {
 
@@ -127,4 +128,89 @@ public class ServerControl {
 
     }
 
+    /**
+     * Gives the shell and run & close command for the current operating system. Only checking for
+     * operating systems Linux, Windows and Mac; if not mac or windows assumes that it is Linux.
+     *
+     * @return String array - with the shell for the current os and the run and close setting
+     */
+    public static String[] getOsShell() {
+        String[] output = new String[3];
+
+        output[2] = System.getProperty("os.name");
+
+        //Check current operating system is Windows
+        if (output[2].startsWith("Windows")) {
+            output[0] = "Cmd.exe";
+            output[1] = "/c";
+
+        } else if (output[2].startsWith("Mac")) {
+            //else check if current operating system is Mac (Don't know if this works)
+            output[0] = "zsh";
+            output[1] = "-c";
+
+        } else {
+            //Else assume operating system is Linux
+            output[0] = "bash";
+            output[1] = "-c";
+        }
+        return output;
+    }
+
+    public static String[] cloneAndBuild(String json) throws IOException {
+
+        //Init shell for os
+        String[] osShell;
+
+        //Get all required strings from JsonParser.
+        String gitAddress = JsonParser.get_clone_url(json);
+        String gitId = JsonParser.get_sha_pull_request(json);
+        String gitDirectory = JsonParser.get_full_name(json);
+
+        //Get the shell for current os
+        osShell = getOsShell();
+
+        //Sets which directory to clone to
+        String cloneDirectory = System.getProperty("user.dir");
+
+        String[] result1; String[] result2; String[] result3; String[] result4;
+
+        //Run git clone on git address and log output
+        result1 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "clone", gitAddress);
+        logDataToFile(result1);
+
+        //If error; return error and not continue further commands
+        if (!result1[0].equals("0")){
+            return result1;
+        }
+
+        //Run cd to git directory and log the output
+        result2 = runCommand(cloneDirectory, osShell[0], osShell[1], "cd", gitDirectory);
+        logDataToFile(result2);
+
+        //If error; return error and not continue further commands
+        if (!result2[0].equals("0")){
+            return result2;
+        }
+
+        //Run git checkout to the pushed branch and log the output
+        result3 = runCommand(cloneDirectory, osShell[0], osShell[1], "git", "checkout", gitId);
+        logDataToFile(result3);
+
+        //If error; return error and not continue further commands
+        if (!result3[0].equals("0")){
+            return result3;
+        }
+
+        //Run ./gradlew build in current directory and se if code can build. Also logs the result
+        result4 = runCommand(cloneDirectory, osShell[0], osShell[1], "./gradlew", "build");
+        logDataToFile(result4);
+
+
+        //Need to remove directory
+        //runCommand(cloneDirectory, osShell[0], osShell[1], "rm", "-r", gitDirectory);
+
+        return result4;
+
+    }
 }
