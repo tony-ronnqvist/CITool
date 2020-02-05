@@ -1,9 +1,28 @@
+import Firebase.*;
+import com.google.api.core.ApiFuture;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
+import com.google.gson.JsonElement;
 import mockit.Expectations;
 import mockit.Mocked;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+
 
 public class TestClass {
 
@@ -168,6 +187,80 @@ public class TestClass {
         //Assert that the end of the end of the expected output is equal to the end of the output
         assert lastLineInFile.endsWith(expectedEndOutput) : "Test 2 - Failed: Not correct entry on last line";
         assert !lastLineInFile.endsWith(notExpectedEndOutput) : "Test 3 - Failed: Returned wrong entry";
+
+    }
+
+    @Test
+    public void testUpdateDatabase() throws IOException{
+
+        /**
+         *Test to add a new collection to database. Then gets that collection and sees if it is the same.
+         */
+        // Commutations between server and firebase
+        FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
+
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("https://citool.firebaseio.com")
+                .build();
+
+        FirebaseApp.initializeApp(options);
+        Firestore db = FirestoreClient.getFirestore();
+
+
+        //One example that needs to add to the classes.
+        PullRequest pullrequest = new PullRequest("https://github.com/repos/feluxz/CITEST/pulls/13","MDExOlB1bGxSZXF1ZXN0MzY5OTA1MDgy", "https://github.com/repos/feluxz/CITEST/issues/13", 13, "soijsfoij");
+
+        User user = new User("feluxz", "https://avatars0.githubusercontent.com/u/29494534?v=4");
+
+        Body body = new Body("2020-02-03T14:26:58Z");
+
+        BuildResult buildResult = new BuildResult(false, "Lorem ipsum");
+        //Done with example
+
+
+        //This is what is sent to Firebase with set()
+        Database database = new Database(pullrequest, user, body, buildResult);
+
+        //This is the ID of the Pull_request.
+        String childPath = "369905050";
+
+        db.collection("builds").document(childPath).set(database);
+
+        try {
+
+            DocumentReference docref = db.collection("builds").document("369905050");
+            ApiFuture<DocumentSnapshot> future = docref.get();
+            DocumentSnapshot document = future.get();
+
+            System.out.println(document.exists());
+
+            if (document.exists()){
+                HashMap<String, Object> map = (HashMap<String, Object>) document.getData();
+                HashMap<String, Object> pullReq = (HashMap<String, Object>) map.get("pullrequest");
+                HashMap<String, Object> buildRes = (HashMap<String, Object>) map.get("buildResult");
+
+                assert (pullReq.get("number")).equals((long)database.pullrequest.number): "testUpdateDatabase Test1 Failed";
+
+                assert pullReq.get("node_id").equals(database.pullrequest.node_id) : "testUpdateDatabase Test2 Failed";
+
+                assert buildRes.get("status").equals(database.buildResult.status): "testUpdateDatabase Test3 Failed";
+
+                assert !database.buildResult.status : "testUpdateDatabase Test4 Failed";
+
+                db.collection("builds").document("369905050").delete();
+
+            }else{
+                assert !document.exists(): "testUpdateDatabaseExists Test1 Failed";
+                db.collection("builds").document("369905050").delete();
+            }
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
     }
 

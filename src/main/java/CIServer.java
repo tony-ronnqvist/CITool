@@ -12,6 +12,10 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Map;
 
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.gson.Gson;
 
 import java.io.FileInputStream;
@@ -67,12 +71,9 @@ public class CIServer extends AbstractHandler
             System.out.println(map.get("number"));
         }
 
-
-
-
         //Updating the database with new information
 
-        updateDatabase(response);
+      //  updateDatabase(response);
 
       //  response.getWriter().println("CI job done");
     }
@@ -98,7 +99,7 @@ public class CIServer extends AbstractHandler
 
         Body body = new Body("2020-02-03T14:26:58Z");
 
-        BuildResult buildResult = new BuildResult(true, "Lorem ipsum");
+        BuildResult buildResult = new BuildResult(false, "Lorem ipsum");
         //Done with example
 
 
@@ -106,30 +107,18 @@ public class CIServer extends AbstractHandler
         Database database = new Database(pullrequest, user, body, buildResult);
 
         //This is the ID of the Pull_request.
-        String childPath = "369905082";
+        String childPath = "369905050";
 
-        //Sending a new uppdate
-        ApiFuture<WriteResult> future = db.collection("builds").document(childPath).set(database);
-        try {
-            response.getWriter().println("Done: " + future.get().getUpdateTime());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        //Sending a new uppdate --   ApiFuture<WriteResult> future =
+        db.collection("builds").document(childPath).set(database);
 
-/*        // getting the update
-        DocumentReference docref = db.collection("builds").document("9e52161");
-        ApiFuture<DocumentSnapshot> future = docref.get();
-        try {
-            DocumentSnapshot document = future.get();
 
-            response.getWriter().println(document.getData());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }*/
+
+        // response.getWriter().println("Done: " + future.get().getUpdateTime());
+
+        // getting the update
+
+
 
         //response.getWriter().println(future.get().getUpdateTime());
     }
