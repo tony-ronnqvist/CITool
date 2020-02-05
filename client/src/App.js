@@ -1,10 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useContext} from "react";
 
-import firebase from "./util/firebase";
+import BuildsContext from "./util/buildsContext";
 
 const App = () => {
+  const builds = useContext(BuildsContext)
 
-  useEffect(() => {firebase.getBuilds()});
+  useEffect(() => console.log(builds), [builds]);
 
   return <div className="App"></div>;
 }
