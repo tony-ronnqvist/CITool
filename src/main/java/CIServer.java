@@ -1,8 +1,9 @@
-import Firebase.Body;
+import Firebase.Data;
 import Firebase.BuildResult;
 import Firebase.Database;
 import Firebase.PullRequest;
 import Firebase.User;
+import Firebase.Type;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 import org.eclipse.jetty.server.Server;
@@ -40,13 +42,12 @@ import com.google.firebase.cloud.FirestoreClient;
 
 
 /**
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+ ContinuousIntegrationServer for windows using github integration
  */
-public class CIServer extends AbstractHandler
-{
+public class CIServer extends AbstractHandler {
 
     Firestore dbAdmin;
+    private final ReentrantLock lock = new ReentrantLock();
 
     public CIServer() throws IOException {
         System.out.println("First time to get connected to database");
@@ -67,60 +68,79 @@ public class CIServer extends AbstractHandler
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response)
-            throws IOException, ServletException
-    {
+            throws IOException {
+
+        //Init handle method values
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
 
         //Extract the event type (push or pull-request)
-        String headerValue =  JsonParser.getGitHubEventFromHeader(request);
+        String headerValue = JsonParser.getGitHubEventFromHeader(request);
+
+        //Lock and wait until request has been handled
+        lock.lock();
+        try {
+
+            //If headerValue is pull_request run scripts and log data
+            if (headerValue.equals("push")) {
+
+                //Print that new puss was received by server
+                System.out.println("Received new push request");
+
+                //Get the payload and represent the json as string jsonString
+                String jsonString = JsonParser.getJsonFromRequest(request);
+
+                //Run script for push
+                String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
+
+            }
+
+            //If headerValue is pull_request run scripts and log data
+            if (headerValue.equals("pull_request")) {
+
+                //Print that new puss was received by server
+                System.out.println("Received new pull request");
+
+                //Get the payload and represent the json as string jsonString
+                String jsonString = JsonParser.getJsonFromRequest(request);
+
+                //Run script for pull request
+                String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
 
 
-        if(headerValue.equals("push")){
-            //Get the payload and represent the json as string jsonString
-            String [] responseScript;
-            String jsonString = JsonParser.getJsonFromRequest(request);
-            responseScript = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
-            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
+                //Needs comments
+                String action = "PULLREQUEST";
+                BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
+                PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString), JsonParser.get_issue_url(jsonString), number.intValue(), JsonParser.get_title(jsonString));
 
+                User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
+
+                BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
+
+                Data data = new Data(pullrequest, user, buildResult);
+
+                //-------------
+
+                Type type = new Type(action);
+
+                Database database = new Database(type, data);
+
+                // updateDatabase(db, database);
+
+
+                //This is the ID of the Pull_request.
+                String childPath = ("df7f75ea3b0e2686a41759dd00cc6289feda4c15");
+
+            }
+        } finally {
+            //When process has finished running unlock and let next request through
+            lock.unlock();
         }
-
-        if(headerValue.equals("pull_request")){
-            //Get the payload and represent the json as string jsonString
-            String [] responseScript;
-            String jsonString = JsonParser.getJsonFromRequest(request);
-            responseScript = ServerControl.cloneAndBuildWin(jsonString,"PULL");
-            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
-        }
-
-            String jsonString = JsonParser.getJsonFromRequest(request);
-
-            BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
-            PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
-
-            User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
-
-            Body body = new Body(JsonParser.get_updated_at(jsonString));
-
-            BuildResult buildResult = new BuildResult(false, "This build is unsuccessful");
+    }
 
 
-            Database database = new Database(pullrequest, user, body, buildResult);
-
-            // updateDatabase(db, database);
-
-
-            //This is the ID of the Pull_request.
-            String childPath = ("3511124144");
-
-            //Sending a new update --
-            //dbAdmin.collection("builds").document(childPath).set(database);
-
-        }
-
-
-
+    
 
 
     // used to start the CI server in command line

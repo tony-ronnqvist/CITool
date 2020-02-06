@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Class for controlling logging information and controlling shell on the continuous integration server
+ * Class for controlling logging information and controlling shell on windows.
+ * Which are used by the continuous integration server to clone and build repository
  */
 public class ServerControl {
 
@@ -69,7 +70,7 @@ public class ServerControl {
      *
      * @param inputStream InputStream - with bytes to read
      * @return String - of bytes in inputStream
-     * @throws IOException -
+     * @throws IOException - If error in I/O
      */
     private static String convertStreamToString(InputStream inputStream) throws IOException {
 
@@ -158,7 +159,7 @@ public class ServerControl {
     }
 
     /**
-     * Mac server script for cloning and building a repository from github
+     * Mac server script for cloning and building a repository from github. IN TESTING PHASE USE AT OWN RISK!!!
      *
      * @param json String - with Json information
      * @return String array - with information whether the different script steps passed or not
@@ -241,7 +242,7 @@ public class ServerControl {
 
         //Get correct git address, ID and Dir depending whether it was a push or pull
         if (pushOrPull.equals("PUSH")) {
-            gitAddr = JsonParser.get_clone_url(json);
+            gitAddr = JsonParser.get_clone_url_push(json);
             gitId = JsonParser.get_sha_push(json);
             gitDir = JsonParser.get_name_push(json);
         } else {
@@ -293,7 +294,7 @@ public class ServerControl {
         }
 
 
-        ////STEP 3/4: Build with gradle and remove temporary folder
+        ////STEP 3/4:  Checkout the current branch and build with gradle and remove temporary folder
         resultStep3 = runCommand(resultStep2[1].replace(lineSep, ""), oSh[0], oSh[1], "git", "-c"
                 , "advice.detachedHead=false", "checkout", gitId, "&&", "gradlew.bat");
         resultStep4 = runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1], "rd", "/s"
