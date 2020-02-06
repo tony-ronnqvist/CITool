@@ -1,13 +1,125 @@
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.lang.reflect.Type;
 import java.util.Enumeration;
 import java.util.Map;
 
 public final class JsonParser {
+    /**
+     * PUSH
+     */
+
+    /**
+     * Gets the sha from a "push" json string
+     * @param jsonString
+     * @return String - containing full_name from github payload
+     */
+    public static String get_sha_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+
+        //Create map of user object
+        Map map = gson.fromJson(jsonStringAsObject, Map.class);
+        //Return the after value
+        return (map.get("after") == null) ? "null" : map.get("after").toString();
+    }
+
+    /**
+     * Gets the name from a "push" json string
+     * @param jsonString
+     * @return String - containing name from github payload
+     */
+    public static String get_name_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the pull-request object
+        JsonObject repository = jsonStringAsObject.getAsJsonObject("repository");
+        //Create map of user object
+        Map map = gson.fromJson(repository, Map.class);
+        //Return the name value
+        return (map.get("name") == null) ? "null" : map.get("name").toString();
+    }
+
+
+    /**
+     * Gets the url from a "push" json string
+     * @param jsonString
+     * @return String - containing url from github payload
+     */
+    public static String get_url_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the repository object
+        JsonObject repository = jsonStringAsObject.getAsJsonObject("repository");
+        //Create map of repo object
+        Map map = gson.fromJson(repository, Map.class);
+        //Return the url value
+        return (map.get("url") == null) ? "null" : map.get("url").toString();
+    }
+    /**
+     * Gets the url from a "push" json string
+     * @param jsonString
+     * @return String - containing url from github payload
+     */
+    public static String get_updated_at_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the pull-request object
+        JsonObject repository = jsonStringAsObject.getAsJsonObject("repository");
+        //Create map of user object
+        Map map = gson.fromJson(repository, Map.class);
+        //Return the url value
+        return (map.get("updated_at") == null) ? "null" : map.get("updated_at").toString();
+    }
+    /**
+     * Gets the login from a "push" json string
+     * @param jsonString
+     * @return String - containing login from github payload
+     */
+    public static String get_login_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the repository object
+        JsonObject repository = jsonStringAsObject.getAsJsonObject("repository");
+        //Extract the owner object
+        JsonObject owner = repository.getAsJsonObject("owner");
+        //Create map of  owner object
+        Map map = gson.fromJson(owner, Map.class);
+        //Return the login value
+        return (map.get("login") == null) ? "null" : map.get("login").toString();
+    }
+    /**
+     * Gets the login from a "push" json string
+     * @param jsonString
+     * @return String - containing login from github payload
+     */
+    public static String get_avatar_url_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the repository object
+        JsonObject repository = jsonStringAsObject.getAsJsonObject("repository");
+        //Extract the owner object
+        JsonObject owner = repository.getAsJsonObject("owner");
+        //Create map of user object
+        Map map = gson.fromJson(owner, Map.class);
+        //Return the url value
+        return (map.get("avatar_url") == null) ? "null" : map.get("avatar_url").toString();
+    }
+
+
+    /**
+    * PULL-REQUESTS
+    */
+
+
     /**
      * Gets the sha from a "pull-request" json string
      * @param jsonString
