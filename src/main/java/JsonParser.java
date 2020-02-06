@@ -46,9 +46,9 @@ public final class JsonParser {
     }
 
     /**
-     * Gets the full_name from a "pull-request" json string
+     * Gets the name from a "pull-request" json string
      * @param jsonString
-     * @return String - containing full_name from github payload
+     * @return String - containing name from github payload
      */
     public static String get_full_name(String jsonString){
         //Create jsonObject of jsonString
@@ -63,7 +63,7 @@ public final class JsonParser {
         //Create map of user object
         Map map = gson.fromJson(repo, Map.class);
         //Return the full_name value
-        return (map.get("full_name") == null) ? "null" : map.get("full_name").toString();
+        return (map.get("name") == null) ? "null" : map.get("name").toString();
     }
     /**
      * Gets the title from a "pull-request" json string
