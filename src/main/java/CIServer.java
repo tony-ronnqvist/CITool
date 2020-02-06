@@ -1,8 +1,9 @@
-import Firebase.Body;
+import Firebase.Data;
 import Firebase.BuildResult;
 import Firebase.Database;
 import Firebase.PullRequest;
 import Firebase.User;
+import Firebase.Type;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,9 +78,11 @@ public class CIServer extends AbstractHandler
 
 
         if(headerValue.equals("push")){
+            String action = "PUSH";
 
         }
         if(headerValue.equals("pull_request")){
+            String action = "PULLREQUEST";
             String jsonString = JsonParser.getJsonFromRequest(request);
 
             BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
@@ -87,21 +90,24 @@ public class CIServer extends AbstractHandler
 
             User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
 
-            Body body = new Body(JsonParser.get_updated_at(jsonString));
+            BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
 
-            BuildResult buildResult = new BuildResult(false, "This build is unsuccessful");
+            Data data = new Data(pullrequest, user, buildResult);
 
+            //-------------
 
-            Database database = new Database(pullrequest, user, body, buildResult);
+            Type type = new Type(action);
+
+            Database database = new Database(type, data);
 
             // updateDatabase(db, database);
 
 
             //This is the ID of the Pull_request.
-            String childPath = ("3511124144");
+            String childPath = ("df7f75ea3b0e2686a41759dd00cc6289feda4c15");
 
             //Sending a new uppdate --
-           // dbAdmin.collection("builds").document(childPath).set(database);
+          //  dbAdmin.collection("builds").document(childPath).set(database);
 
         }
 
