@@ -115,11 +115,7 @@ public class CIServer extends AbstractHandler {
             //This is the ID of the Pull_request.
             String childPath = ("df7f75ea3b0e2686a41759dd00cc6289feda4c15");
         }
-
-        //Sending a new update --
-        //dbAdmin.collection("builds").document(childPath).set(database);
-
-
+        
     }
 
 
