@@ -49,6 +49,10 @@ public class CIServer extends AbstractHandler {
     Firestore dbAdmin;
     private final ReentrantLock lock = new ReentrantLock();
 
+    /**
+     * Creates a connection with the database
+     * @throws IOException
+     */
     public CIServer() throws IOException {
         System.out.println("First time to get connected to database");
         // Commutations between server and firebase
@@ -70,7 +74,6 @@ public class CIServer extends AbstractHandler {
                        HttpServletResponse response)
             throws IOException {
 
-        //Init handle method values
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -93,6 +96,7 @@ public class CIServer extends AbstractHandler {
 
                 //Run script for push
                 String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
+                createClassesPush(request);
 
             }
 
@@ -107,30 +111,7 @@ public class CIServer extends AbstractHandler {
 
                 //Run script for pull request
                 String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
-
-
-                //Needs comments
-                String action = "PULLREQUEST";
-                BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
-                PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString), JsonParser.get_issue_url(jsonString), number.intValue(), JsonParser.get_title(jsonString));
-
-                User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
-
-                BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
-
-                Data data = new Data(pullrequest, user, buildResult);
-
-                //-------------
-
-                Type type = new Type(action);
-
-                Database database = new Database(type, data);
-
-                // updateDatabase(db, database);
-
-
-                //This is the ID of the Pull_request.
-                String childPath = ("df7f75ea3b0e2686a41759dd00cc6289feda4c15");
+                createClassesPull(request);
 
             }
         } finally {
@@ -139,9 +120,75 @@ public class CIServer extends AbstractHandler {
         }
     }
 
+    /**
+     * Creates the push classes: PullRequest, User, BuildResult, Data, Type
+     * @param request
+     */
+    public void createClassesPush(HttpServletRequest request){
+        String action = "PUSH";
 
-    
+        String jsonString = JsonParser.getJsonFromRequest(request);
 
+        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString));
+
+        User user = new User(JsonParser.get_name_push(jsonString), JsonParser.get_avatar_url_push(jsonString));
+
+        BuildResult buildResult = new BuildResult(true, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");  // --> väntar på update
+
+        Data data = new Data(pullrequest, user, buildResult);
+
+        Type type = new Type(action);
+
+        updateDatabase(type, data, ("Pu" +JsonParser.get_sha_push(jsonString)));
+
+    }
+
+    /**
+     * Creates the push classes: PullRequest, User, BuildResult, Data, Type
+     * @param request
+     */
+    public void createClassesPull(HttpServletRequest request){
+        String action = "PULLREQUEST";
+
+        String jsonString = JsonParser.getJsonFromRequest(request);
+
+        BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
+        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
+
+        User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
+
+
+        BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
+
+        Data data = new Data(pullrequest, user, buildResult);
+
+        Type type = new Type(action);
+
+        updateDatabase(type, data, ("Pl"+JsonParser.get_sha_pull_request(jsonString)));
+
+    }
+
+    /**
+     * Updates the database on firebase with either pull och push information
+     * @param type
+     * @param data
+     * @param jsonString
+     */
+    public void updateDatabase(Type type, Data data, String jsonString){
+
+        Database database = new Database(type, data);
+
+        String childPath = "";
+        if (jsonString.equals("Plnull")){
+            int x = (int)(Math.random()*((1000000000-100)+1))+100;
+            String numberPull = Integer.toString(x);
+            childPath = "Pl" + numberPull;
+        }else {
+            childPath = jsonString;
+        }
+
+        dbAdmin.collection("builds").document(childPath).set(database);
+    }
 
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception

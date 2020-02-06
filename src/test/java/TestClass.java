@@ -287,7 +287,6 @@ public class TestClass {
         assert JsonParser.get_clone_url_push(testJson).equals(url) == true : "Test1 failed ";
     }
 
-
     /**
      * Input: Process builder with mocked error stream
      * Output: Array - with exit code and error messages if any

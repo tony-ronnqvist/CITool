@@ -12,6 +12,23 @@ public final class JsonParser {
      */
 
     /**
+     * Gets the clone_url from a "push" json string
+     * @param jsonString
+     * @return String - containing clone_url from github payload
+     */
+    public static String get_clone_url_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the pull-request object
+        JsonObject repository = jsonStringAsObject.getAsJsonObject("repository");
+        //Create map of repository object
+        Map map = gson.fromJson(repository, Map.class);
+        //Return the name value
+        return (map.get("clone_url") == null) ? "null" : map.get("clone_url").toString();
+    }
+
+    /**
      * Gets the sha from a "push" json string
      * @param jsonString
      * @return String - containing full_name from github payload
