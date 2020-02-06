@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-01-31T11:52:23" hostname="n166-p209.eduroam.kth.se" time="0.005">
+<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-02-06T18:53:08" hostname="DESKTOP-AOMMV14" time="1.049">
   <properties/>
-  <testcase name="test1" classname="TestClass" time="0.005"/>
-  <system-out><![CDATA[Test 1 works
+  <testcase name="test_status_API" classname="TestClass" time="1.049"/>
+  <system-out><![CDATA[RESPONSECODE: HTTP/1.1 401 Unauthorized
+RESPONSECODE: HTTP/1.1 401 Unauthorized
 ]]></system-out>
-  <system-err><![CDATA[]]></system-err>
+  <system-err><![CDATA[[Test worker] INFO org.eclipse.jetty.util.log - Logging initialized @987ms to org.eclipse.jetty.util.log.Slf4jLog
+]]></system-err>
 </testsuite>
