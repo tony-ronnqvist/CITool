@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Map;
 
+import com.google.api.client.json.JsonString;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,21 +54,19 @@ public class CIServer extends AbstractHandler
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
 
-        //Get the payload and represent the json as string jsonString
-        String jsonString = JsonParser.getJsonFromRequest(request);
 
         //Extract the event type (push or pull-request)
         String headerValue =  JsonParser.getGitHubEventFromHeader(request);
-
-        //Convert string to map and extract the key
-        Gson gson = new Gson();
-        Map map = gson.fromJson(jsonString, Map.class);
 
         if(headerValue.equals("push")){
 
         }
         if(headerValue.equals("pull_request")){
-            System.out.println(map.get("number"));
+            //Get the payload and represent the json as string jsonString
+            String [] responseScript;
+            String jsonString = JsonParser.getJsonFromRequest(request);
+            responseScript = ServerControl.cloneAndBuildWin(jsonString);
+            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
         }
 
         //Updating the database with new information
