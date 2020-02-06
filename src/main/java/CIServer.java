@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Map;
 
 import com.google.api.client.json.JsonString;
@@ -44,6 +45,24 @@ import com.google.firebase.cloud.FirestoreClient;
  */
 public class CIServer extends AbstractHandler
 {
+
+    Firestore dbAdmin;
+
+    public CIServer() throws IOException {
+        System.out.println("First time to get connected to database");
+        // Commutations between server and firebase
+        FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
+
+        FirebaseOptions options = new FirebaseOptions.Builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("https://citool.firebaseio.com")
+                .build();
+
+        FirebaseApp myDatabase = FirebaseApp.initializeApp(options, "Admin");
+        dbAdmin = FirestoreClient.getFirestore(myDatabase);
+
+    }
+
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -54,13 +73,14 @@ public class CIServer extends AbstractHandler
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
 
-
         //Extract the event type (push or pull-request)
         String headerValue =  JsonParser.getGitHubEventFromHeader(request);
+
 
         if(headerValue.equals("push")){
 
         }
+
         if(headerValue.equals("pull_request")){
             //Get the payload and represent the json as string jsonString
             String [] responseScript;
@@ -69,59 +89,32 @@ public class CIServer extends AbstractHandler
             System.out.printf("%s - %s", responseScript[0], responseScript[1]);
         }
 
-        //Updating the database with new information
+            String jsonString = JsonParser.getJsonFromRequest(request);
+
+            BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
+            PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
+
+            User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
+
+            Body body = new Body(JsonParser.get_updated_at(jsonString));
+
+            BuildResult buildResult = new BuildResult(false, "This build is unsuccessful");
 
 
-        //updateDatabase(response);
+            Database database = new Database(pullrequest, user, body, buildResult);
+
+            // updateDatabase(db, database);
 
 
-      //  response.getWriter().println("CI job done");
-    }
+            //This is the ID of the Pull_request.
+            String childPath = ("3511124144");
 
-    public void updateDatabase(HttpServletResponse response) throws IOException {
+            //Sending a new update --
+            //dbAdmin.collection("builds").document(childPath).set(database);
 
-        // Commutations between server and firebase
-        FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
-
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://citool.firebaseio.com")
-                .build();
-
-        FirebaseApp.initializeApp(options);
-        Firestore db = FirestoreClient.getFirestore();
+        }
 
 
-        //One example that needs to add to the classes.
-        PullRequest pullrequest = new PullRequest("https://github.com/repos/feluxz/CITEST/pulls/13","MDExOlB1bGxSZXF1ZXN0MzY5OTA1MDgy", "https://github.com/repos/feluxz/CITEST/issues/13", 13, "soijsfoij");
-
-        User user = new User("feluxz", "https://avatars0.githubusercontent.com/u/29494534?v=4");
-
-        Body body = new Body("2020-02-03T14:26:58Z");
-
-        BuildResult buildResult = new BuildResult(false, "Lorem ipsum");
-        //Done with example
-
-
-        //This is what is sent to Firebase with set()
-        Database database = new Database(pullrequest, user, body, buildResult);
-
-        //This is the ID of the Pull_request.
-        String childPath = "369905050";
-
-        //Sending a new uppdate --   ApiFuture<WriteResult> future =
-        db.collection("builds").document(childPath).set(database);
-
-
-
-        // response.getWriter().println("Done: " + future.get().getUpdateTime());
-
-        // getting the update
-
-
-
-        //response.getWriter().println(future.get().getUpdateTime());
-    }
 
 
 
