@@ -100,10 +100,19 @@ public class CIServer extends AbstractHandler {
 
                 //Get the payload and represent the json as string jsonString
                 String jsonString = JsonParser.getJsonFromRequest(request);
+                //Send response to github that project is pending
+                status_API(jsonString, "pending");
 
                 //Run script for push
                 String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
-                createClassesPush(request, responseScriptPush);
+                createClassesPush(jsonString, responseScriptPush);
+
+                //Send response to github that project failed or succeeded
+                if (responseScriptPush.equals("0")) {
+                    status_API(jsonString, "success");
+                } else {
+                    status_API(jsonString, "failure");
+                }
 
             }
 
@@ -115,10 +124,22 @@ public class CIServer extends AbstractHandler {
 
                 //Get the payload and represent the json as string jsonString
                 String jsonString = JsonParser.getJsonFromRequest(request);
+                System.out.println(jsonString);
+                System.out.println(JsonParser.get_number(jsonString));
+
+                //Send response to github that project is pending
+                status_API(jsonString, "pending");
 
                 //Run script for pull request
                 String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
-                createClassesPull(request, responseScriptPull);
+                createClassesPull(jsonString, responseScriptPull);
+
+                //Send response to github that project failed or succeeded
+                if (responseScriptPull.equals("0")) {
+                    status_API(jsonString, "success");
+                } else {
+                    status_API(jsonString, "failure");
+                }
 
             }
         } finally {
@@ -131,10 +152,8 @@ public class CIServer extends AbstractHandler {
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
      * @param request
      */
-    public void createClassesPush(HttpServletRequest request, String[] responseScript){
+    public void createClassesPush(String jsonString, String[] responseScript){
         String action = "PUSH";
-
-        String jsonString = JsonParser.getJsonFromRequest(request);
 
         PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString));
 
@@ -169,6 +188,7 @@ public class CIServer extends AbstractHandler {
      *@return string - Connection condition for checking
      */
     public static String status_API(String jsonString, String state) throws UnsupportedEncodingException {
+
 
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String owner,repo,sha,description;
@@ -210,10 +230,8 @@ public class CIServer extends AbstractHandler {
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
      * @param request
      */
-    public void createClassesPull(HttpServletRequest request, String[] responseScript){
+    public void createClassesPull(String jsonString, String[] responseScript){
         String action = "PULLREQUEST";
-
-        String jsonString = JsonParser.getJsonFromRequest(request);
 
         BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
         PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
