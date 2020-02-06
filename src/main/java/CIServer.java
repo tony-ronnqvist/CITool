@@ -81,7 +81,9 @@ public class CIServer extends AbstractHandler {
 
         }
 
+
         if (headerValue.equals("pull_request")) {
+
 
             String action = "PULLREQUEST";
 
@@ -91,8 +93,6 @@ public class CIServer extends AbstractHandler {
             responseScript = ServerControl.cloneAndBuildWin(jsonString);
             System.out.printf("%s - %s", responseScript[0], responseScript[1]);
 
-
-           // String jsonString = JsonParser.getJsonFromRequest(request);
 
             BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
             PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString), JsonParser.get_issue_url(jsonString), number.intValue(), JsonParser.get_title(jsonString));
@@ -119,9 +119,7 @@ public class CIServer extends AbstractHandler {
     }
 
 
-
-
-
+    
 
 
     // used to start the CI server in command line
