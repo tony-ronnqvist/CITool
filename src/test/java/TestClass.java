@@ -486,16 +486,13 @@ public class TestClass {
     * Depending on the operating system should return the correct shell and run and close command
     */
     @Test
-    public void testgetOsShell () {
+    public void testGetOsShell () {
 
         //Initialize system operating system and run getOsShell method
         String operatingSystem = System.getProperty("os.name");
         String shell = ServerControl.getOsShell()[0];
 
-        //Checks if returned operating system begins with, e.g. "Mac" if check if correct shell was generated
-        if (operatingSystem.startsWith("Mac")) {
-            assert shell.equals("zsh") : "Test 1 - Failed: Not correct shell";
-        } else if (operatingSystem.startsWith("Win")) {
+        if (operatingSystem.startsWith("Win")) {
             assert shell.equals("Cmd.exe") : "Test 1 - Failed: Not correct shell";
         } else {
             assert shell.equals("bash") : "Test 1 - Failed: Not correct shell";
