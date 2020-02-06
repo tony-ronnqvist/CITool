@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Map;
 
+import com.google.api.client.json.JsonString;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,8 +44,7 @@ import com.google.firebase.cloud.FirestoreClient;
  Skeleton of a ContinuousIntegrationServer which acts as webhook
  See the Jetty documentation for API documentation of those classes.
  */
-public class CIServer extends AbstractHandler
-{
+public class CIServer extends AbstractHandler {
 
     Firestore dbAdmin;
 
@@ -67,26 +67,35 @@ public class CIServer extends AbstractHandler
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
 
         //Extract the event type (push or pull-request)
-        String headerValue =  JsonParser.getGitHubEventFromHeader(request);
+        String headerValue = JsonParser.getGitHubEventFromHeader(request);
 
 
-        if(headerValue.equals("push")){
+        if (headerValue.equals("push")) {
             String action = "PUSH";
 
         }
-        if(headerValue.equals("pull_request")){
+
+        if (headerValue.equals("pull_request")) {
+
             String action = "PULLREQUEST";
+
+            //Get the payload and represent the json as string jsonString
+            String[] responseScript;
             String jsonString = JsonParser.getJsonFromRequest(request);
+            responseScript = ServerControl.cloneAndBuildWin(jsonString);
+            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
+
+
+           // String jsonString = JsonParser.getJsonFromRequest(request);
 
             BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
-            PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
+            PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString), JsonParser.get_issue_url(jsonString), number.intValue(), JsonParser.get_title(jsonString));
 
             User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
 
@@ -105,18 +114,17 @@ public class CIServer extends AbstractHandler
 
             //This is the ID of the Pull_request.
             String childPath = ("df7f75ea3b0e2686a41759dd00cc6289feda4c15");
-
-            //Sending a new uppdate --
-          //  dbAdmin.collection("builds").document(childPath).set(database);
-
         }
+
+        //Sending a new update --
+        //dbAdmin.collection("builds").document(childPath).set(database);
+
 
     }
 
-//    public void updateDatabase(HttpServletResponse response) throws IOException {
-//
-//
-//    }
+
+
+
 
 
 
