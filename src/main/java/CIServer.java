@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 import org.eclipse.jetty.server.Server;
@@ -41,12 +42,12 @@ import com.google.firebase.cloud.FirestoreClient;
 
 
 /**
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+ ContinuousIntegrationServer for windows using github integration
  */
 public class CIServer extends AbstractHandler {
 
     Firestore dbAdmin;
+    private final ReentrantLock lock = new ReentrantLock();
 
     /**
      * Creates a connection with the database
@@ -71,7 +72,8 @@ public class CIServer extends AbstractHandler {
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
+
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -79,15 +81,43 @@ public class CIServer extends AbstractHandler {
         //Extract the event type (push or pull-request)
         String headerValue = JsonParser.getGitHubEventFromHeader(request);
 
+        //Lock and wait until request has been handled
+        lock.lock();
+        try {
 
-        // Server listens for push or pull
-        if(headerValue.equals("push")){
-            createClassesPush(request);
-        }
-        if(headerValue.equals("pull_request")){
-            createClassesPull(request);
-        }
+            //If headerValue is pull_request run scripts and log data
+            if (headerValue.equals("push")) {
 
+                //Print that new puss was received by server
+                System.out.println("Received new push request");
+
+                //Get the payload and represent the json as string jsonString
+                String jsonString = JsonParser.getJsonFromRequest(request);
+
+                //Run script for push
+                String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
+                createClassesPush(request);
+
+            }
+
+            //If headerValue is pull_request run scripts and log data
+            if (headerValue.equals("pull_request")) {
+
+                //Print that new puss was received by server
+                System.out.println("Received new pull request");
+
+                //Get the payload and represent the json as string jsonString
+                String jsonString = JsonParser.getJsonFromRequest(request);
+
+                //Run script for pull request
+                String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
+                createClassesPull(request);
+
+            }
+        } finally {
+            //When process has finished running unlock and let next request through
+            lock.unlock();
+        }
     }
 
     /**
@@ -126,6 +156,7 @@ public class CIServer extends AbstractHandler {
         PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
 
         User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
+
 
         BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
 
