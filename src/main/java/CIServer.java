@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Map;
 
+import com.google.api.client.json.JsonString;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,7 +80,15 @@ public class CIServer extends AbstractHandler
         if(headerValue.equals("push")){
 
         }
+
         if(headerValue.equals("pull_request")){
+            //Get the payload and represent the json as string jsonString
+            String [] responseScript;
+            String jsonString = JsonParser.getJsonFromRequest(request);
+            responseScript = ServerControl.cloneAndBuildWin(jsonString);
+            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
+        }
+
             String jsonString = JsonParser.getJsonFromRequest(request);
 
             BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
@@ -100,17 +109,12 @@ public class CIServer extends AbstractHandler
             //This is the ID of the Pull_request.
             String childPath = ("3511124144");
 
-            //Sending a new uppdate --
-           // dbAdmin.collection("builds").document(childPath).set(database);
+            //Sending a new update --
+            //dbAdmin.collection("builds").document(childPath).set(database);
 
         }
 
-    }
 
-//    public void updateDatabase(HttpServletResponse response) throws IOException {
-//
-//
-//    }
 
 
 
