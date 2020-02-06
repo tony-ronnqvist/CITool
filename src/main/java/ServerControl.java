@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Class for controlling logging information and controlling shell on the continuous integration server
+ * Class for controlling logging information and controlling shell on windows.
+ * Which are used by the continuous integration server to clone and build repository
  */
 public class ServerControl {
 
@@ -69,7 +70,7 @@ public class ServerControl {
      *
      * @param inputStream InputStream - with bytes to read
      * @return String - of bytes in inputStream
-     * @throws IOException -
+     * @throws IOException - If error in I/O
      */
     private static String convertStreamToString(InputStream inputStream) throws IOException {
 
@@ -158,9 +159,11 @@ public class ServerControl {
     }
 
     /**
-     * @param json
-     * @return
-     * @throws IOException
+     * Mac server script for cloning and building a repository from github. IN TESTING PHASE USE AT OWN RISK!!!
+     *
+     * @param json String - with Json information
+     * @return String array - with information whether the different script steps passed or not
+     * @throws IOException - if I/O error
      */
     public static String[] cloneAndBuildMac(String json) throws IOException {
 
@@ -173,7 +176,11 @@ public class ServerControl {
         String lineSep = System.getProperty("line.separator");
 
         //Init all steps
-        String[] resultStep0; String[] resultStep1; String[] resultStep2; String[] resultStep3; String[] resultStep4;
+        String[] resultStep0;
+        String[] resultStep1;
+        String[] resultStep2;
+        String[] resultStep3;
+        String[] resultStep4;
 
 
         ////STEP 0: Get the "root" folder to be able to remove the temporary directory later
@@ -186,7 +193,7 @@ public class ServerControl {
 
         ////STEP 1 : Make temporary directory, change to that directory, and check and save path for future use
         resultStep1 = runCommand(resultStep0[1].replace(lineSep, ""), "mkdir", tmpFolder, "&&",
-        "cd", tmpFolder, "&&", "pwd");
+                "cd", tmpFolder, "&&", "pwd");
         //IF ERROR: Remove temporary folder and return error and do not issue further commands
         if (!resultStep1[0].equals("0")) {
             logDataToFile(resultStep1);
@@ -197,7 +204,7 @@ public class ServerControl {
 
         ////STEP 2: Git clone in current directory, change to cloned directory and save path for future use
         resultStep2 = runCommand(resultStep1[1].replace(lineSep, ""), "git", "clone", gitAddr,
-        "&&", "cd", gitDir, "&&", "pwd");
+                "&&", "cd", gitDir, "&&", "pwd");
         //IF ERROR: Remove temporary folder and return error and do not issue further commands
         if (!resultStep2[0].equals("0")) {
             logDataToFile(resultStep2);
@@ -207,8 +214,8 @@ public class ServerControl {
 
 
         ////STEP 3/4: Build with gradle and remove temporary folder
-        resultStep3 = runCommand(resultStep2[1].replace(lineSep, ""),"git", "checkout", gitId,
-        "&&", "./gradlew", "build");
+        resultStep3 = runCommand(resultStep2[1].replace(lineSep, ""), "git", "checkout", gitId,
+                "&&", "./gradlew", "build");
         resultStep4 = runCommand(resultStep0[1].replace(lineSep, ""), "rm", "-r", tmpFolder);
         //IF ERROR: Log that folder was not removed
         if (!resultStep4[0].equals("0")) {
@@ -223,22 +230,34 @@ public class ServerControl {
     }
 
     /**
-     * @param json
-     * @return
-     * @throws IOException
+     * Windows server script for cloning and building a repository from github
+     *
+     * @param json String - with Json information
+     * @return String array - with information whether the different script steps passed or not
+     * @throws IOException - if I/O error
      */
-    public static String[] cloneAndBuildWin(String json) throws IOException {
-        //Get all required strings from JsonParser.
-        String gitAddr = JsonParser.get_clone_url(json);
-        String gitId = JsonParser.get_sha_pull_request(json);
-        String gitDir = JsonParser.get_full_name(json);
+    public static String[] cloneAndBuildWin(String json, String pushOrPull) throws IOException {
+
+        String gitAddr, gitId, gitDir;
+
+        //Get correct git address, ID and Dir depending whether it was a push or pull
+        if (pushOrPull.equals("PUSH")) {
+            gitAddr = JsonParser.get_clone_url_push(json);
+            gitId = JsonParser.get_sha_push(json);
+            gitDir = JsonParser.get_name_push(json);
+        } else {
+            gitAddr = JsonParser.get_clone_url(json);
+            gitId = JsonParser.get_sha_pull_request(json);
+            gitDir = JsonParser.get_full_name(json);
+        }
+
         String firstDir = System.getProperty("user.dir");
         String tmpFolder = "tempGitCloneCI";
         String[] oSh = getOsShell();
         String lineSep = System.getProperty("line.separator");
 
         //Init all steps
-        String[] resultStep0; String[] resultStep1; String[] resultStep2; String[] resultStep3; String[] resultStep4;
+        String[] resultStep0, resultStep1, resultStep2, resultStep3, resultStep4;
 
 
         ////STEP 0: Get the "root" folder to be able to remove the temporary directory later
@@ -251,35 +270,35 @@ public class ServerControl {
 
 
         ////STEP 1 : Make temporary directory, change to that directory, and check and save path for future use
-        resultStep1 = runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1],"mkdir",
-        tmpFolder,
-         "&&", "cd", tmpFolder, "&&", "cd");
+        resultStep1 = runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1], "mkdir",
+                tmpFolder,
+                "&&", "cd", tmpFolder, "&&", "cd");
         //IF ERROR: Remove temporary folder and return error and do not issue further commands
         if (!resultStep1[0].equals("0")) {
             logDataToFile(resultStep1);
             runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1], "rd", "/s", "/q",
-            tmpFolder);
+                    tmpFolder);
             return resultStep1;
         }
 
 
         ////STEP 2: Git clone in current directory, change to cloned directory and save path for future use
-        resultStep2 = runCommand(resultStep1[1].replace(lineSep, ""), oSh[0], oSh[1],"git",
-         "clone", gitAddr, "&&", "cd", gitDir, "&&", "cd");
+        resultStep2 = runCommand(resultStep1[1].replace(lineSep, ""), oSh[0], oSh[1], "git",
+                "clone", gitAddr, "&&", "cd", gitDir, "&&", "cd");
         //IF ERROR: Remove temporary folder and return error and do not issue further commands
         if (!resultStep2[0].equals("0")) {
             logDataToFile(resultStep2);
             runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1], "rd", "/s", "/q",
-            tmpFolder);
+                    tmpFolder);
             return resultStep2;
         }
 
 
-        ////STEP 3/4: Build with gradle and remove temporary folder
-        resultStep3 = runCommand(resultStep2[1].replace(lineSep, ""),oSh[0], oSh[1], "git","-c"
-        ,"advice.detachedHead=false", "checkout", gitId, "&&", "gradlew.bat");
+        ////STEP 3/4:  Checkout the current branch and build with gradle and remove temporary folder
+        resultStep3 = runCommand(resultStep2[1].replace(lineSep, ""), oSh[0], oSh[1], "git", "-c"
+                , "advice.detachedHead=false", "checkout", gitId, "&&", "gradlew.bat");
         resultStep4 = runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1], "rd", "/s"
-        , "/q", tmpFolder);
+                , "/q", tmpFolder);
         //IF ERROR: Log that folder was not removed
         if (!resultStep4[0].equals("0")) {
             logDataToFile(resultStep4);

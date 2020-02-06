@@ -19,4 +19,9 @@ public class PullRequest {
 
     }
 
+    public PullRequest(String url, String issue_url) {
+        this.url = url;
+        this.issue_url = issue_url;
+    }
+
 }

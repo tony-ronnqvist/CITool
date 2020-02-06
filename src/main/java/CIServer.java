@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 import org.apache.http.HttpEntity;
@@ -46,13 +47,17 @@ import com.google.firebase.cloud.FirestoreClient;
 
 
 /**
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+ ContinuousIntegrationServer for windows using github integration
  */
 public class CIServer extends AbstractHandler {
 
     Firestore dbAdmin;
+    private final ReentrantLock lock = new ReentrantLock();
 
+    /**
+     * Creates a connection with the database
+     * @throws IOException
+     */
     public CIServer() throws IOException {
         System.out.println("First time to get connected to database");
         // Commutations between server and firebase
@@ -72,7 +77,8 @@ public class CIServer extends AbstractHandler {
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
+
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -80,47 +86,66 @@ public class CIServer extends AbstractHandler {
         //Extract the event type (push or pull-request)
         String headerValue = JsonParser.getGitHubEventFromHeader(request);
 
+        //Lock and wait until request has been handled
+        lock.lock();
+        try {
 
-        if (headerValue.equals("push")) {
-            String action = "PUSH";
+            //If headerValue is pull_request run scripts and log data
+            if (headerValue.equals("push")) {
 
+                //Print that new puss was received by server
+                System.out.println("Received new push request");
+
+                //Get the payload and represent the json as string jsonString
+                String jsonString = JsonParser.getJsonFromRequest(request);
+
+                //Run script for push
+                String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
+                createClassesPush(request);
+
+            }
+
+            //If headerValue is pull_request run scripts and log data
+            if (headerValue.equals("pull_request")) {
+
+                //Print that new puss was received by server
+                System.out.println("Received new pull request");
+
+                //Get the payload and represent the json as string jsonString
+                String jsonString = JsonParser.getJsonFromRequest(request);
+
+                //Run script for pull request
+                String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
+                createClassesPull(request);
+
+            }
+        } finally {
+            //When process has finished running unlock and let next request through
+            lock.unlock();
         }
+    }
 
+    /**
+     * Creates the push classes: PullRequest, User, BuildResult, Data, Type
+     * @param request
+     */
+    public void createClassesPush(HttpServletRequest request){
+        String action = "PUSH";
 
-        if (headerValue.equals("pull_request")) {
+        String jsonString = JsonParser.getJsonFromRequest(request);
 
+        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString));
 
-            String action = "PULLREQUEST";
+        User user = new User(JsonParser.get_name_push(jsonString), JsonParser.get_avatar_url_push(jsonString));
 
-            //Get the payload and represent the json as string jsonString
-            String[] responseScript;
-            String jsonString = JsonParser.getJsonFromRequest(request);
-            responseScript = ServerControl.cloneAndBuildWin(jsonString);
-            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
+        BuildResult buildResult = new BuildResult(true, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");  // --> väntar på update
 
+        Data data = new Data(pullrequest, user, buildResult);
 
-            BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
-            PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString), JsonParser.get_issue_url(jsonString), number.intValue(), JsonParser.get_title(jsonString));
+        Type type = new Type(action);
 
-            User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
+        updateDatabase(type, data, ("Pu" +JsonParser.get_sha_push(jsonString)));
 
-            BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
-
-            Data data = new Data(pullrequest, user, buildResult);
-
-            //-------------
-
-            Type type = new Type(action);
-
-            Database database = new Database(type, data);
-
-            // updateDatabase(db, database);
-
-
-            //This is the ID of the Pull_request.
-            String childPath = ("df7f75ea3b0e2686a41759dd00cc6289feda4c15");
-        }
-        
     }
 
     /**
@@ -180,9 +205,54 @@ public class CIServer extends AbstractHandler {
         }
         return "not tried";
     }
+  
+    /**
+     * Creates the push classes: PullRequest, User, BuildResult, Data, Type
+     * @param request
+     */
+    public void createClassesPull(HttpServletRequest request){
+        String action = "PULLREQUEST";
 
-    
+        String jsonString = JsonParser.getJsonFromRequest(request);
 
+        BigInteger number = new BigInteger(JsonParser.get_number(jsonString));
+        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url(jsonString),JsonParser.get_issue_url(jsonString), number.intValue(),JsonParser.get_title(jsonString));
+
+        User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
+
+
+
+        BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
+
+        Data data = new Data(pullrequest, user, buildResult);
+
+        Type type = new Type(action);
+
+        updateDatabase(type, data, ("Pl"+JsonParser.get_sha_pull_request(jsonString)));
+
+    }
+
+    /**
+     * Updates the database on firebase with either pull och push information
+     * @param type
+     * @param data
+     * @param jsonString
+     */
+    public void updateDatabase(Type type, Data data, String jsonString){
+
+        Database database = new Database(type, data);
+
+        String childPath = "";
+        if (jsonString.equals("Plnull")){
+            int x = (int)(Math.random()*((1000000000-100)+1))+100;
+            String numberPull = Integer.toString(x);
+            childPath = "Pl" + numberPull;
+        }else {
+            childPath = jsonString;
+        }
+
+        dbAdmin.collection("builds").document(childPath).set(database);
+    }
 
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
