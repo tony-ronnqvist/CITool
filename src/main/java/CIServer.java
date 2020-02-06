@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
 import java.util.Map;
 
@@ -21,11 +21,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.gson.Gson;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -118,6 +123,63 @@ public class CIServer extends AbstractHandler {
         
     }
 
+    /**
+     *Getting the Description base on state
+     *@param state String - api status after testing
+     *@return description string - description after checking
+     */
+    public static String getDescription(String state){
+        if (state.equals("success")) return "Build completed";
+        if (state.equals("error")) return "Build error";
+        if (state.equals("failure")) return "Build has failed";
+        if (state.equals("pending")) return "still building...";
+        return "error state";
+    }
+
+    /**
+     *Sending status api back to github
+     *A string return for the connection condition is generated.
+     *@param jsonString String - Pull request information
+     *@param state String - api status after testing
+     *@return string - Connection condition for checking
+     */
+    public static String status_API(String jsonString, String state) throws UnsupportedEncodingException {
+
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String owner,repo,sha,description;
+        owner=JsonParser.get_login(jsonString);
+        repo=JsonParser.get_full_name(jsonString);
+        sha=JsonParser.get_sha_pull_request(jsonString);
+        description=getDescription(state);
+        if (description.equals("error state")) {
+            return "Unacceptable state";
+        }
+
+        try {
+            StringEntity body = new StringEntity("{\"state\": \"" +state +"\", " +
+                    "\"target_url\": \"https://citools.firebaseapp.com/builds/3\"," +
+                    "\"description\": \"" + description +"\" ," +
+                    "\"context\": \"continuous-integration\" }");
+            String url = "https://api.github.com/repos/"+owner+ "/"+repo+"/statuses/"+sha;
+            HttpPost post = new HttpPost(url);
+            post.setEntity(body);
+            post.addHeader("Authorization", "token " + Token.getToken());
+            HttpResponse response = httpClient.execute(post);
+            System.out.println("RESPONSECODE: " + response.getStatusLine());
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                try (InputStream instream = entity.getContent()) {
+                    return "good";
+                }catch (Exception e){
+                    return "entity error";
+                }
+            }
+            //System.out.println("url: " + url );
+        }catch (Exception ex) {
+            return "error "+ ex;
+        }
+        return "not tried";
+    }
 
     
 
@@ -131,3 +193,4 @@ public class CIServer extends AbstractHandler {
         server.join();
     }
 }
+
