@@ -12,6 +12,8 @@ import javax.servlet.ServletException;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import com.google.api.client.json.JsonString;
@@ -96,7 +98,7 @@ public class CIServer extends AbstractHandler {
 
                 //Run script for push
                 String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
-                createClassesPush(request);
+                createClassesPush(request, responseScriptPush);
 
             }
 
@@ -111,7 +113,7 @@ public class CIServer extends AbstractHandler {
 
                 //Run script for pull request
                 String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
-                createClassesPull(request);
+                createClassesPull(request, responseScriptPull);
 
             }
         } finally {
@@ -124,7 +126,7 @@ public class CIServer extends AbstractHandler {
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
      * @param request
      */
-    public void createClassesPush(HttpServletRequest request){
+    public void createClassesPush(HttpServletRequest request, String[] responseScript){
         String action = "PUSH";
 
         String jsonString = JsonParser.getJsonFromRequest(request);
@@ -133,9 +135,8 @@ public class CIServer extends AbstractHandler {
 
         User user = new User(JsonParser.get_name_push(jsonString), JsonParser.get_avatar_url_push(jsonString));
 
-        BuildResult buildResult = new BuildResult(true, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");  // --> väntar på update
 
-        Data data = new Data(pullrequest, user, buildResult);
+        Data data = new Data(pullrequest, user, buildMessages(responseScript));
 
         Type type = new Type(action);
 
@@ -147,7 +148,7 @@ public class CIServer extends AbstractHandler {
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
      * @param request
      */
-    public void createClassesPull(HttpServletRequest request){
+    public void createClassesPull(HttpServletRequest request, String[] responseScript){
         String action = "PULLREQUEST";
 
         String jsonString = JsonParser.getJsonFromRequest(request);
@@ -157,10 +158,7 @@ public class CIServer extends AbstractHandler {
 
         User user = new User(JsonParser.get_full_name(jsonString), JsonParser.get_avatar_url(jsonString));
 
-
-        BuildResult buildResult = new BuildResult(false, "This build is unsuccessful", "2020-02-06T13:00:04.293Z");
-
-        Data data = new Data(pullrequest, user, buildResult);
+        Data data = new Data(pullrequest, user, buildMessages(responseScript));
 
         Type type = new Type(action);
 
@@ -188,6 +186,32 @@ public class CIServer extends AbstractHandler {
         }
 
         dbAdmin.collection("builds").document(childPath).set(database);
+    }
+
+    /**
+     * Takes a script response and change it to a BuildResult
+     *
+     * @param responseScript String array - with exit code and exit messages
+     * @return BuildResult - correctly formatted
+     */
+    public static BuildResult buildMessages(String[] responseScript){
+        //Init. exit code as boolean
+        boolean exitCode = false;
+
+        String exitMessages = responseScript[1];
+
+        if (responseScript[0].equals("0")) {
+            exitCode = true;
+            exitMessages = "The build was successful";
+        }
+
+        //Fix date and format
+        SimpleDateFormat buildDateFormat = new SimpleDateFormat("yyyy-MM-dd '@' HH:mm:ss");
+        Date buildDate = new Date(System.currentTimeMillis());
+
+        //create a BuildResult
+
+        return new BuildResult(exitCode, exitMessages, buildDateFormat.format(buildDate));
     }
 
     // used to start the CI server in command line
