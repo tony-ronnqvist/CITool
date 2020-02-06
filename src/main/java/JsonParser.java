@@ -146,11 +146,14 @@ public final class JsonParser {
         //Create jsonObject of jsonString
         JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
         Gson gson = new Gson();
-
+        //Extract the pull-request object
+        JsonObject pull_request = jsonStringAsObject.getAsJsonObject("pull_request");
+        //Extract the head object
+        JsonObject user = pull_request.getAsJsonObject("head");
         //Create map of user object
-        Map map = gson.fromJson(jsonStringAsObject, Map.class);
+        Map map = gson.fromJson(user, Map.class);
         //Return the full_name value
-        return (map.get("after") == null) ? "null" : map.get("after").toString();
+        return (map.get("sha") == null) ? "null" : map.get("sha").toString();
     }
 
      /**
