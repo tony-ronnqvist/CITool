@@ -78,6 +78,11 @@ public class CIServer extends AbstractHandler
 
 
         if(headerValue.equals("push")){
+            //Get the payload and represent the json as string jsonString
+            String [] responseScript;
+            String jsonString = JsonParser.getJsonFromRequest(request);
+            responseScript = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
+            System.out.printf("%s - %s", responseScript[0], responseScript[1]);
 
         }
 
@@ -85,7 +90,7 @@ public class CIServer extends AbstractHandler
             //Get the payload and represent the json as string jsonString
             String [] responseScript;
             String jsonString = JsonParser.getJsonFromRequest(request);
-            responseScript = ServerControl.cloneAndBuildWin(jsonString);
+            responseScript = ServerControl.cloneAndBuildWin(jsonString,"PULL");
             System.out.printf("%s - %s", responseScript[0], responseScript[1]);
         }
 
