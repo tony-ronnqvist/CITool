@@ -2,7 +2,7 @@
 
 ## Project desciption
 
-The CI server decides whether a pull request should be merged or not, depending on compilation and testing.
+The CI server decides whether a push or pull request should be merged or not, depending on compilation and testing.
 
 Compilation: the CI server first perform a static syntax check for languages without compiler. Compilation is triggered as webhook, the CI server compiles the branch where the change has been made, as specified in the HTTP payload.
 
