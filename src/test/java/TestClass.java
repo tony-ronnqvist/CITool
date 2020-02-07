@@ -38,7 +38,7 @@ public class TestClass {
      * We then send request to getJsonFromRequest and expect "Example String" in return
      */
     @Test
-    public void testGetJsonFromRequest() {
+    public void testGetJsonFromRequest() { 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setServerName("www.example.com");
         String str = "Example String";
@@ -250,7 +250,7 @@ public class TestClass {
         assert JsonParser.get_url_push(testJson).equals(url) == true : "Test1 failed ";
     }
     /**
-     * Extracts the updated_at from push given json for push from github 
+     * Extracts the updated_at from push given json for push from github
      */
     @Test
     public void test_get_updated_at_push() {
