@@ -58,10 +58,9 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Creates a connection with the database
-     * @throws IOException
+     * @throws IOException - Exception
      */
     public CIServer() throws IOException {
-        System.out.println("First time to get connected to database");
         // Commutations between server and firebase
         FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
 
@@ -75,6 +74,14 @@ public class CIServer extends AbstractHandler {
 
     }
 
+    /**
+     * The server that is listening for action
+     * @param target - String
+     * @param baseRequest - Request
+     * @param request - HttpServletRequest
+     * @param response - HttpServletResponse
+     * @throws IOException - Exception
+     */
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -150,8 +157,8 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
-     *
-     * @param request
+     * @param jsonString - String, the json string from github
+     * @param responseScript - String[], the response from the build
      */
     public void createClassesPush(String jsonString, String[] responseScript){
         String action = "PUSH";
@@ -237,7 +244,8 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
-     * @param request
+     * @param jsonString     - String, the json string from github
+     * @param responseScript - String[], the response from the build
      */
     public void createClassesPull(String jsonString, String[] responseScript){
         String action = "PULLREQUEST";
@@ -257,9 +265,9 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Updates the database on firebase with either pull och push information
-     * @param type
-     * @param data
-     * @param jsonString
+     * @param type - Class Type in package Firebase
+     * @param data - Class Data in package Firebase
+     * @param jsonString - String, the json string from github
      */
     public void updateDatabase(Type type, Data data, String jsonString){
 
@@ -303,6 +311,11 @@ public class CIServer extends AbstractHandler {
         return new BuildResult(exitCode, exitMessages, buildDateFormat.format(buildDate));
     }
 
+    /**
+     * Main method
+     * @param args - Inputs from compilation (if there are any)
+     * @throws Exception - Exception
+     */
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
     {
