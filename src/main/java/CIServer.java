@@ -54,7 +54,7 @@ import com.google.firebase.cloud.FirestoreClient;
 public class CIServer extends AbstractHandler {
 
     Firestore dbAdmin;
-    private final ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock(); 
 
     /**
      * Creates a connection with the database
