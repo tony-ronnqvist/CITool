@@ -38,7 +38,7 @@ public class TestClass {
      * We then send request to getJsonFromRequest and expect "Example String" in return
      */
     @Test
-    public void testGetJsonFromRequest() { 
+    public void testGetJsonFromRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setServerName("www.example.com");
         String str = "Example String";
@@ -63,7 +63,7 @@ public class TestClass {
         byte[] b = str.getBytes();
         request.setContent(b);
 
-        assert JsonParser.getGitHubEventFromHeader(request).equals(str) == true : "Test1 failed";
+        assert JsonParser.getGitHubEventFromHeader(request).equals(str) == false : "Test1 failed";
         /**
          * Header name should not be accepted by getGitHubEventFromHeader
          */
