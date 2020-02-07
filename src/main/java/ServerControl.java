@@ -222,7 +222,6 @@ public class ServerControl {
             logDataToFile(resultStep4);
             return resultStep4;
         }
-
         //Log as successful if all above task exited without error
         logDataToFile(resultStep3);
         return resultStep3;
@@ -296,7 +295,7 @@ public class ServerControl {
 
         ////STEP 3/4:  Checkout the current branch and build with gradle and remove temporary folder
         resultStep3 = runCommand(resultStep2[1].replace(lineSep, ""), oSh[0], oSh[1], "git", "-c"
-                , "advice.detachedHead=false", "checkout", gitId, "&&", "gradlew.bat");
+                , "advice.detachedHead=false", "checkout", gitId, "&&", "gradlew", "build");
         resultStep4 = runCommand(resultStep0[1].replace(lineSep, ""), oSh[0], oSh[1], "rd", "/s"
                 , "/q", tmpFolder);
         //IF ERROR: Log that folder was not removed

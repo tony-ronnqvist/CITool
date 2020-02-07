@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { useBuilds } from "../util/hooks";
 
@@ -16,6 +17,11 @@ const Builds = () => {
       </WithLoader>
     </div>
   );
+};
+
+Builds.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  builds: PropTypes.object
 };
 
 export default Builds;

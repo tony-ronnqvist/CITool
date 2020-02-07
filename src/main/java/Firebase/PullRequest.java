@@ -1,4 +1,8 @@
 package Firebase;
+
+/**
+ * Contain the information from Pull and Push request
+ */
 public class PullRequest {
 
 
@@ -11,6 +15,13 @@ public class PullRequest {
 
     }
 
+    /**
+     * The request result
+     * @param url - String
+     * @param issue_url - String
+     * @param number - String
+     * @param title - String
+     */
     public PullRequest(String url, String issue_url, int number, String title) {
         this.url = url;
         this.issue_url = issue_url;
@@ -19,9 +30,15 @@ public class PullRequest {
 
     }
 
-    public PullRequest(String url, String issue_url) {
+    /**
+     * When only the url and issue_url exist
+     * @param url - String
+     * @param issue_url - String
+     */
+    public PullRequest(String url, String issue_url, String title) {
         this.url = url;
         this.issue_url = issue_url;
+        this.title = title;
     }
 
 }
