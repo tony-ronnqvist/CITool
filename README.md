@@ -43,12 +43,12 @@ reasonable way.
 
 ## Statement of contribution :gift_heart:
 
-Berggren, Christina @chrpete
+Berggren, Christina @chrpete - Databse integration in CIServer classs with server and Javadoc
 
-Leung, Jacky @ksjleung
+Leung, Jacky @ksjleung -  status notifications in CIServer to github and readme
 
-Lindström, Ruben @rubenli
+Lindström, Ruben @rubenli - react client app
 
-Magnell, Felix @fmagnell
+Magnell, Felix @fmagnell - JsonParser class and CIServer class
 
-Rönnqvist, Tony @tonyr
+Rönnqvist, Tony @tonyr - ServerControl class and CIServer class
