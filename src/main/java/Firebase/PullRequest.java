@@ -35,9 +35,10 @@ public class PullRequest {
      * @param url - String
      * @param issue_url - String
      */
-    public PullRequest(String url, String issue_url) {
+    public PullRequest(String url, String issue_url, String title) {
         this.url = url;
         this.issue_url = issue_url;
+        this.title = title;
     }
 
 }

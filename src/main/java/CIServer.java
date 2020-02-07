@@ -165,7 +165,7 @@ public class CIServer extends AbstractHandler {
     public void createClassesPush(String jsonString, String[] responseScript){
         String action = "PUSH";
 
-        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString));
+        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString), JsonParser.get_message_push(jsonString));
 
         User user = new User(JsonParser.get_name_push(jsonString), JsonParser.get_avatar_url_push(jsonString));
 
