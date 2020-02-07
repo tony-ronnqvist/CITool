@@ -260,7 +260,7 @@ public class TestClass {
         assert JsonParser.get_updated_at_push(testJson).equals(url) == true : "Test1 failed ";
     }
     /**
-     * Extracts the login from push given json for push from github 
+     * Extracts the login from push given json for push from github  
      */
     @Test
     public void test_get_login_push() {
