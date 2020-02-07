@@ -15,27 +15,15 @@ const BuildsTable = ({ builds, limit }) => {
         const {
           data: {
             buildResult: { timestamp, status },
-            body,
-            pullRequest: { number },
+            pullRequest: { number, title },
             user: { avatar_url, login }
           },
-          type
+          type: { action: type }
         } = build;
-        const title =
-          type === "PUSH" ? `Push #${number}` : build.data.pullRequest.title;
         return (
           <Link key={key} to={`/builds/${key}`}>
             <Card
-              {...{
-                type,
-                timestamp,
-                body,
-                status,
-                number,
-                title,
-                avatar_url,
-                login
-              }}
+              {...{ timestamp, status, number, title, avatar_url, login, type }}
             />
           </Link>
         );
@@ -50,7 +38,7 @@ const BuildsTable = ({ builds, limit }) => {
 };
 
 BuildsTable.propTypes = {
-  builds: PropTypes.object.isRequired,
+  builds: PropTypes.object,
   limit: PropTypes.number
 };
 
