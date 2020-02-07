@@ -4,11 +4,11 @@
 
 The CI server decides whether a push or pull request should be merged or not, depending on compilation and testing.
 
-Compilation: the CI server first perform a static syntax check for languages without compiler. Compilation is triggered as webhook, the CI server compiles the branch where the change has been made, as specified in the HTTP payload.
+Compilation: The CI server first perform a static syntax check for languages without compiler. Compilation is triggered as webhook, the CI server compiles the branch where the change has been made, as specified in the HTTP payload.
 
-Testing: teh CI server execute the automated tests of the group project. Testing is triggered as webhook, on the branch where the change has been made, as specified in the HTTP payload.
+Testing: The CI server execute the automated tests of the group project. Testing is triggered as webhook, on the branch where the change has been made, as specified in the HTTP payload.
 
-After compilation and testing, the CI server sends notification of CI results (Commit status) back to GitHub.
+Notification: After compilation and testing, the CI server sends notification of CI results (Commit status) back to GitHub. Commit statuses with state, target_url, description and context are created for a given SHA. Then sned the commit statuses with the GitHub personal access token to GitHub through HttpPost. 
 
 Lastly, the CI server keeps the history of the past builds by sending information to the database. Each build is given a unique URL, that is accessible to get the build information.
 
