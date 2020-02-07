@@ -92,6 +92,12 @@ public class CIServer extends AbstractHandler {
         lock.lock();
         try {
 
+            String token= null;
+            try {
+                token = Token.getToken();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
             //If headerValue is pull_request run scripts and log data
             if (headerValue.equals("push")) {
                 String eventType = "push";
@@ -101,7 +107,7 @@ public class CIServer extends AbstractHandler {
                 //Get the payload and represent the json as string jsonString
                 String jsonString = JsonParser.getJsonFromRequest(request);
                 //Send response to github that project is pending
-                status_API(jsonString, "pending", eventType);
+                status_API(jsonString, "pending", eventType,token);
 
                 //Run script for push
                 String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
@@ -109,9 +115,9 @@ public class CIServer extends AbstractHandler {
 
                 //Send response to github that project failed or succeeded
                 if (responseScriptPush.equals("0")) {
-                    status_API(jsonString, "success",eventType);
+                    status_API(jsonString, "success",eventType,token);
                 } else {
-                    status_API(jsonString, "failure",eventType);
+                    status_API(jsonString, "failure",eventType,token);
                 }
 
             }
@@ -128,7 +134,7 @@ public class CIServer extends AbstractHandler {
                 System.out.println(JsonParser.get_number(jsonString));
 
                 //Send response to github that project is pending
-                status_API(jsonString, "pending", eventType );
+                status_API(jsonString, "pending", eventType,token );
 
                 //Run script for pull request
                 String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
@@ -136,9 +142,9 @@ public class CIServer extends AbstractHandler {
 
                 //Send response to github that project failed or succeeded
                 if (responseScriptPull.equals("0")) {
-                    status_API(jsonString, "success", eventType );
+                    status_API(jsonString, "success", eventType,token );
                 } else {
-                    status_API(jsonString, "failure", eventType );
+                    status_API(jsonString, "failure", eventType,token );
                 }
 
             }
@@ -190,7 +196,7 @@ public class CIServer extends AbstractHandler {
      * @param state      String - api status after testing
      * @return string - Connection condition for checking
      */
-    public static String status_API(String jsonString, String state, String eventType) throws UnsupportedEncodingException {
+    public static String status_API(String jsonString, String state, String eventType,String token) throws UnsupportedEncodingException {
         String owner = "", repo = "", sha = "", description = "";
         if (eventType.equals("push")) {
             owner = JsonParser.get_login_push(jsonString);
@@ -217,7 +223,7 @@ public class CIServer extends AbstractHandler {
             String url = "https://api.github.com/repos/" + owner + "/" + repo + "/statuses/" + sha;
             HttpPost post = new HttpPost(url);
             post.setEntity(body);
-            post.addHeader("Authorization", "token " + Token.getToken());
+            post.addHeader("Authorization", "token " + token);
             HttpResponse response = httpClient.execute(post);
             System.out.println("RESPONSECODE: " + response.getStatusLine());
             HttpEntity entity = response.getEntity();
