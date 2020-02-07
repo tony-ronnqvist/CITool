@@ -1,7 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const builds = () => {
-  return <div>builds</div>;
+import { useBuilds } from "../util/hooks";
+
+// Components
+import WithLoader from "../components/withLoader";
+import BuildsTable from "../components/buildsTable";
+
+const Builds = () => {
+  const { builds, loading } = useBuilds();
+  return (
+    <div>
+      <h1 className="page-title">Builds</h1>
+      <WithLoader loading={loading}>
+        <BuildsTable builds={builds} />
+      </WithLoader>
+    </div>
+  );
 };
 
-export default builds;
+Builds.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  builds: PropTypes.object
+};
+
+export default Builds;
