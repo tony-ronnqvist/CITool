@@ -17,7 +17,7 @@ Lastly, the CI server keeps the history of the past builds by sending informatio
 
 ## Documentation :mag_right:
 
-The documentation can be found [:link: HERE](JavaDoc/allclasses-index.html)
+The documentation can be found [:link: HERE](https://sleepy-allen-9161d8.netlify.com)
 
 The list of the past builds can be found [:link: HERE](https://citool.firebaseapp.com/builds)
 
