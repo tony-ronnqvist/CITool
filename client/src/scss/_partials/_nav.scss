@@ -1,0 +1,19 @@
+nav {
+  background-color: #f4f4f4;
+  ul {
+    padding: 0.5rem;
+    margin-left: 50px;
+    li {
+      display: inline-block;
+      margin: 0 1rem;
+    }
+
+    a {
+      color: #333;
+      &.active,
+      &:hover {
+        color: #f39c12;
+      }
+    }
+  }
+}
