@@ -18,15 +18,18 @@ Lastly, the CI server keeps the history of the past builds by sending informatio
 
 The documentation can be found [:link: HERE]()
 
-The list of the past builds can be found [:link: HERE]()
+The list of the past builds can be found [:link: HERE](https://citool.firebaseapp.com/builds)
 
 ## API :memo:
 
 ### CIServer
 
-[CIServer.java](src/main/CIServer.java) is a continuous integration server which acts as webhook.
+[CIServer.java](src/main/java/CIServer.java) is a continuous integration server which acts as webhook.
 
+[TestClass.java](src/test/java/TestClass.java) contain all the unit-tests for comilation, testing and notification.
 
+## Requirement:
+Add a token.txt file which only contain your GitHub Personal access tokens under directory: CITool\ .
 
 ## Compatibility policies:
 
