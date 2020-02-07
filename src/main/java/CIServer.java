@@ -191,16 +191,19 @@ public class CIServer extends AbstractHandler {
      * @return string - Connection condition for checking
      */
     public static String status_API(String jsonString, String state, String eventType) throws UnsupportedEncodingException {
-        String owner = "", repo = "", sha = "", description = "";
+        String owner = "", repo = "", sha = "", description = "",id="";
         if (eventType.equals("push")) {
             owner = JsonParser.get_login_push(jsonString);
             repo = JsonParser.get_name_push(jsonString);
             sha = JsonParser.get_sha_push(jsonString);
+            id = "Pu" +JsonParser.get_sha_push(jsonString)
         } else if (eventType.equals("pull_request")) {
             owner = JsonParser.get_login(jsonString);
             repo = JsonParser.get_full_name(jsonString);
             sha = JsonParser.get_sha_pull_request(jsonString);
+            id = "Pl" +JsonParser.get_sha_pull_request(jsonString)
         }
+
         description = getDescription(state);
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
@@ -211,7 +214,7 @@ public class CIServer extends AbstractHandler {
 
         try {
             StringEntity body = new StringEntity("{\"state\": \"" + state + "\", " +
-                    "\"target_url\": \"https://citools.firebaseapp.com/builds/3\"," +
+                    "\"target_url\": \"https://citools.firebaseapp.com/builds/" +id + "\"," +
                     "\"description\": \"" + description + "\" ," +
                     "\"context\": \"continuous-integration\" }");
             String url = "https://api.github.com/repos/" + owner + "/" + repo + "/statuses/" + sha;
