@@ -9,6 +9,7 @@ Compilation & Testing: The CI server first perform a static syntax check for lan
 ```
   gradlew build
 ```
+The program is tested with JUnit as the unit-tests. 
 
 Notification: After compilation and testing, the CI server sends notification of CI results (Commit status) back to GitHub. Commit statuses with state, target_url, description and context are created for a given SHA. Then the commit statuses with the GitHub personal access token would be sent back to GitHub through HttpPost. 
 
@@ -16,7 +17,7 @@ Lastly, the CI server keeps the history of the past builds by sending informatio
 
 ## Documentation :mag_right:
 
-The documentation can be found [:link: HERE]()
+The documentation can be found [:link: HERE](JavaDoc/allclasses-index.html)
 
 The list of the past builds can be found [:link: HERE](https://citool.firebaseapp.com/builds)
 
