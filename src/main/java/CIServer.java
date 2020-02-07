@@ -107,9 +107,11 @@ public class CIServer extends AbstractHandler {
                 String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
                 createClassesPush(jsonString, responseScriptPush);
 
+                System.out.println(responseScriptPush[0]);
                 //Send response to github that project failed or succeeded
-                if (responseScriptPush.equals("0")) {
+                if (responseScriptPush[0].equals("0")) {
                     status_API(jsonString, "success",eventType);
+
                 } else {
                     status_API(jsonString, "failure",eventType);
                 }
@@ -124,8 +126,6 @@ public class CIServer extends AbstractHandler {
 
                 //Get the payload and represent the json as string jsonString
                 String jsonString = JsonParser.getJsonFromRequest(request);
-                System.out.println(jsonString);
-                System.out.println(JsonParser.get_number(jsonString));
 
                 //Send response to github that project is pending
                 status_API(jsonString, "pending", eventType );
@@ -133,10 +133,12 @@ public class CIServer extends AbstractHandler {
                 //Run script for pull request
                 String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
                 createClassesPull(jsonString, responseScriptPull);
+                System.out.println(responseScriptPull[0]);
 
                 //Send response to github that project failed or succeeded
-                if (responseScriptPull.equals("0")) {
+                if (responseScriptPull[0].equals("0")) {
                     status_API(jsonString, "success", eventType );
+                    System.out.println("succ");
                 } else {
                     status_API(jsonString, "failure", eventType );
                 }
@@ -274,7 +276,7 @@ public class CIServer extends AbstractHandler {
             childPath = jsonString;
         }
 
-        dbAdmin.collection("builds").document(childPath).set(database);
+        //dbAdmin.collection("builds").document(childPath).set(database);
     }
 
     /**
