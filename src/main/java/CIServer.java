@@ -196,12 +196,12 @@ public class CIServer extends AbstractHandler {
             owner = JsonParser.get_login_push(jsonString);
             repo = JsonParser.get_name_push(jsonString);
             sha = JsonParser.get_sha_push(jsonString);
-            id = "Pu" +JsonParser.get_sha_push(jsonString)
+            id = "Pu" +JsonParser.get_sha_push(jsonString);
         } else if (eventType.equals("pull_request")) {
             owner = JsonParser.get_login(jsonString);
             repo = JsonParser.get_full_name(jsonString);
             sha = JsonParser.get_sha_pull_request(jsonString);
-            id = "Pl" +JsonParser.get_sha_pull_request(jsonString)
+            id = "Pl" +JsonParser.get_sha_pull_request(jsonString);
         }
 
         description = getDescription(state);
