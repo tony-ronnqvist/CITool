@@ -12,7 +12,7 @@ public final class JsonParser {
      */
     /**
      * Gets the commit message from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing message from github payload
      */
     public static String get_message_push(String jsonString){
@@ -30,7 +30,7 @@ public final class JsonParser {
 
     /**
      * Gets the clone_url from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing clone_url from github payload
      */
     public static String get_clone_url_push(String jsonString){
@@ -47,7 +47,7 @@ public final class JsonParser {
 
     /**
      * Gets the sha from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing full_name from github payload
      */
     public static String get_sha_push(String jsonString){
@@ -63,7 +63,7 @@ public final class JsonParser {
 
     /**
      * Gets the name from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing name from github payload
      */
     public static String get_name_push(String jsonString){
@@ -81,7 +81,7 @@ public final class JsonParser {
 
     /**
      * Gets the url from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing url from github payload
      */
     public static String get_url_push(String jsonString){
@@ -97,7 +97,7 @@ public final class JsonParser {
     }
     /**
      * Gets the url from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing url from github payload
      */
     public static String get_updated_at_push(String jsonString){
@@ -113,7 +113,7 @@ public final class JsonParser {
     }
     /**
      * Gets the login from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing login from github payload
      */
     public static String get_login_push(String jsonString){
@@ -131,7 +131,7 @@ public final class JsonParser {
     }
     /**
      * Gets the login from a "push" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing login from github payload
      */
     public static String get_avatar_url_push(String jsonString){
@@ -156,7 +156,7 @@ public final class JsonParser {
 
     /**
      * Gets the sha from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing full_name from github payload
      */
     public static String get_sha_pull_request(String jsonString){
@@ -175,7 +175,7 @@ public final class JsonParser {
 
      /**
      * Gets the clone_url from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing clone_url from github payload
      */
     public static String get_clone_url(String jsonString){
@@ -196,7 +196,7 @@ public final class JsonParser {
 
     /**
      * Gets the name from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing name from github payload
      */
     public static String get_full_name(String jsonString){
@@ -216,7 +216,7 @@ public final class JsonParser {
     }
     /**
      * Gets the title from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing title from github payload
      */
     public static String get_title(String jsonString){
@@ -232,7 +232,7 @@ public final class JsonParser {
     }
     /**
      * Gets the number from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing number from github payload
      */
     public static String get_number(String jsonString){
@@ -250,7 +250,7 @@ public final class JsonParser {
     }
     /**
      * Gets the issue_url from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing issue_url from github payload
      */
     public static String get_issue_url(String jsonString){
@@ -266,7 +266,7 @@ public final class JsonParser {
     }
     /**
      * Gets the node_id from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing node_id from github payload
      */
     public static String get_node_id(String jsonString){
@@ -282,7 +282,7 @@ public final class JsonParser {
     }
     /**
      * Gets the get_url from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing get_url from github payload
      */
     public static String get_url(String jsonString){
@@ -298,7 +298,7 @@ public final class JsonParser {
     }
     /**
      * Gets the avatar_url from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing avatar_url from github payload
      */
     public static String get_avatar_url(String jsonString){
@@ -316,7 +316,7 @@ public final class JsonParser {
     }
     /**
      * Gets the login from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing login from github payload
      */
     public static String get_login(String jsonString){
@@ -334,7 +334,7 @@ public final class JsonParser {
     }
     /**
      * Gets the updated_at from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing updated_at from github payload
      */
     public static String get_updated_at(String jsonString){
@@ -350,7 +350,7 @@ public final class JsonParser {
     }
     /**
      * Gets the merged_at from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing merged_at from github payload
      */
     public static String get_merged_at(String jsonString){
@@ -366,7 +366,7 @@ public final class JsonParser {
     }
     /**
      * Gets the closed_at from a "pull-request" json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing closed_at from github payload
      */
     public static String get_closed_at(String jsonString){
@@ -382,7 +382,7 @@ public final class JsonParser {
     }
     /**
      * Gets the id from a "commits" array json string
-     * @param jsonString
+     * @param jsonString - String
      * @return String - containing id from github payload
      */
     public static String get_commitId(String jsonString){
@@ -396,7 +396,7 @@ public final class JsonParser {
     }
     /**
      * Gets the json String the HttpServletRequest
-     * @param HttpServletRequest - request
+     * @param request - HttpServletRequest
      * @return String - containing json from github payload
      */
     public static String getJsonFromRequest(HttpServletRequest request){
@@ -414,7 +414,7 @@ public final class JsonParser {
 
     /**
      * Gets event from the header in the HttpServletRequest
-     * @param HttpServletRequest - request
+     * @param request - HttpServletRequest
      * @return String - containing event type from github header
      */
     public static String getGitHubEventFromHeader(HttpServletRequest request) {
