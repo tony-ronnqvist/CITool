@@ -10,6 +10,23 @@ public final class JsonParser {
     /**
      * PUSH
      */
+    /**
+     * Gets the commit message from a "push" json string
+     * @param jsonString
+     * @return String - containing message from github payload
+     */
+    public static String get_message_push(String jsonString){
+        //Create jsonObject of jsonString
+        JsonObject jsonStringAsObject = new Gson().fromJson(jsonString, JsonObject.class);
+        Gson gson = new Gson();
+        //Extract the commit json array
+        JsonArray pull_request = jsonStringAsObject.getAsJsonArray("commits");
+        //Get the first object from the array
+        JsonObject pull_requestJson = pull_request.get(0).getAsJsonObject();
+        //Return the name value
+        return (pull_requestJson.get("message") == null) ? "null" : pull_requestJson.get("message").toString().replace("\"", "");
+    }
+
 
     /**
      * Gets the clone_url from a "push" json string
