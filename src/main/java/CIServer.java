@@ -214,7 +214,7 @@ public class CIServer extends AbstractHandler {
 
         try {
             StringEntity body = new StringEntity("{\"state\": \"" + state + "\", " +
-                    "\"target_url\": \"https://citools.firebaseapp.com/builds/" +id + "\"," +
+                    "\"target_url\": \"https://citool.firebaseapp.com/builds/" +id + "\"," +
                     "\"description\": \"" + description + "\" ," +
                     "\"context\": \"continuous-integration\" }");
             String url = "https://api.github.com/repos/" + owner + "/" + repo + "/statuses/" + sha;
