@@ -1,11 +1,23 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.net.URL;
+
 /**
  Getting the github access token
  Change is needed after pull
 */
+
 public class Token {
     private static String token;
-    public static String getToken(){
-        token = "5eb2eeb62cee26ffee378530d4f8fe1c7035f136";
+    public static String getToken()throws Exception{
+        String a=System.getProperty("java.class.path");
+        String[] path=a.split("build");
+        System.out.println(path[0]);
+        File f = new File(path[0] +"token.txt");
+        BufferedReader reader = new BufferedReader(new FileReader(f));
+        token=reader.readLine();
         return token;
     }
+
 }
