@@ -60,13 +60,23 @@ const StyledCard = styled.div`
 `;
 
 // TODO: Card does not need all this info. Slim down to essentials
-const card = ({ timestamp, status, number, title, avatar_url, login }) => {
+const card = ({
+  timestamp,
+  status,
+  number,
+  title,
+  avatar_url,
+  login,
+  type
+}) => {
   dayjs.extend(relativeTime);
   return (
     <StyledCard status={status}>
       <div className="outer-wrapper">
         <div className="info-wrapper">
-          <div className="pr-title">PR #{number}</div>
+          <div className="pr-title">
+            {type === "PUSH" ? "PU" : `PR #${number}`}
+          </div>
           <figure>
             <img src={avatar_url} alt="user avatar" />
             <figcaption>{login}</figcaption>
@@ -75,15 +85,12 @@ const card = ({ timestamp, status, number, title, avatar_url, login }) => {
         <div className="title-wrapper">{title}</div>
       </div>
       <div className="outer-wrapper">
-        {/* <div>{dayjs(updated_at || closed_at || merged_at).fromNow()}</div> */}
+        <div>{dayjs(timestamp).fromNow()}</div>
         <div></div>
       </div>
     </StyledCard>
   );
 };
-
-// pullrequest: { issue_url, number, title, url },
-//   user: { avatar_url, login }
 
 const { number: pNumber, string: pString, bool: pBool } = PropTypes;
 

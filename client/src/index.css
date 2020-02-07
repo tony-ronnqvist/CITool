@@ -1,0 +1,201 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+@import url("https://fonts.googleapis.com/css?family=Playfair+Display|Roboto&display=swap");
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  line-height: 1.5;
+}
+
+p,
+a {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Playfair Display", serif;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.bigger {
+  font-size: 1.2rem;
+}
+
+.yellow-link {
+  color: #f1c40f;
+  -webkit-transition: color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.yellow-link:hover,
+.yellow-link .active {
+  color: #f39c12;
+}
+
+.rubric {
+  font-weight: bold;
+}
+
+.page-title {
+  font-size: 3rem;
+  margin-bottom: 4rem;
+}
+
+.subtitle {
+  font-size: 2.25rem;
+}
+
+.subtitle::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 60px;
+  background-color: #555;
+  margin: 1rem auto;
+}
+
+.status-text {
+  text-align: center;
+  font-size: 1.5rem;
+  color: dimgray;
+}
+
+nav {
+  background-color: #f4f4f4;
+}
+
+nav ul {
+  padding: 0.5rem;
+  margin-left: 50px;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0 1rem;
+}
+
+nav ul a {
+  color: #333;
+}
+
+nav ul a.active, nav ul a:hover {
+  color: #f39c12;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1190px;
+  margin: auto;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.builds {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.success {
+  color: #2ecc71;
+}
+
+.fail {
+  color: #e74c3c;
+}
+
+.big-profile {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.big-profile img {
+  max-width: 40px;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+/*# sourceMappingURL=index.css.map */
