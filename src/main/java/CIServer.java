@@ -58,10 +58,9 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Creates a connection with the database
-     * @throws IOException
+     * @throws IOException - Exception
      */
     public CIServer() throws IOException {
-        System.out.println("First time to get connected to database");
         // Commutations between server and firebase
         FileInputStream serviceAccount = new FileInputStream("./serviceAccountKey.json");
 
@@ -75,6 +74,14 @@ public class CIServer extends AbstractHandler {
 
     }
 
+    /**
+     * The server that is listening for action
+     * @param target - String
+     * @param baseRequest - Request
+     * @param request - HttpServletRequest
+     * @param response - HttpServletResponse
+     * @throws IOException - Exception
+     */
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -113,9 +120,12 @@ public class CIServer extends AbstractHandler {
                 String [] responseScriptPush = ServerControl.cloneAndBuildWin(jsonString, "PUSH");
                 createClassesPush(jsonString, responseScriptPush);
 
+                System.out.println(responseScriptPush[0]);
                 //Send response to github that project failed or succeeded
+
                 if (responseScriptPush.equals("0")) {
                     status_API(jsonString, "success",eventType,token);
+
                 } else {
                     status_API(jsonString, "failure",eventType,token);
                 }
@@ -130,8 +140,6 @@ public class CIServer extends AbstractHandler {
 
                 //Get the payload and represent the json as string jsonString
                 String jsonString = JsonParser.getJsonFromRequest(request);
-                System.out.println(jsonString);
-                System.out.println(JsonParser.get_number(jsonString));
 
                 //Send response to github that project is pending
                 status_API(jsonString, "pending", eventType,token );
@@ -139,10 +147,13 @@ public class CIServer extends AbstractHandler {
                 //Run script for pull request
                 String[] responseScriptPull = ServerControl.cloneAndBuildWin(jsonString,"PULL");
                 createClassesPull(jsonString, responseScriptPull);
+                System.out.println(responseScriptPull[0]);
 
                 //Send response to github that project failed or succeeded
+
                 if (responseScriptPull.equals("0")) {
                     status_API(jsonString, "success", eventType,token );
+                    System.out.println("succ");
                 } else {
                     status_API(jsonString, "failure", eventType,token );
                 }
@@ -156,13 +167,13 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
-     *
-     * @param request
+     * @param jsonString - String, the json string from github
+     * @param responseScript - String[], the response from the build
      */
     public void createClassesPush(String jsonString, String[] responseScript){
         String action = "PUSH";
 
-        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString));
+        PullRequest pullrequest = new PullRequest(JsonParser.get_clone_url_push(jsonString),JsonParser.get_url_push(jsonString), JsonParser.get_message_push(jsonString));
 
         User user = new User(JsonParser.get_name_push(jsonString), JsonParser.get_avatar_url_push(jsonString));
 
@@ -196,17 +207,22 @@ public class CIServer extends AbstractHandler {
      * @param state      String - api status after testing
      * @return string - Connection condition for checking
      */
+
     public static String status_API(String jsonString, String state, String eventType,String token) throws UnsupportedEncodingException {
-        String owner = "", repo = "", sha = "", description = "";
+
+        String owner = "", repo = "", sha = "", description = "",id="";
         if (eventType.equals("push")) {
             owner = JsonParser.get_login_push(jsonString);
             repo = JsonParser.get_name_push(jsonString);
             sha = JsonParser.get_sha_push(jsonString);
+            id = "Pu" +JsonParser.get_sha_push(jsonString);
         } else if (eventType.equals("pull_request")) {
             owner = JsonParser.get_login(jsonString);
             repo = JsonParser.get_full_name(jsonString);
             sha = JsonParser.get_sha_pull_request(jsonString);
+            id = "Pl" +JsonParser.get_sha_pull_request(jsonString);
         }
+
         description = getDescription(state);
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
@@ -217,7 +233,7 @@ public class CIServer extends AbstractHandler {
 
         try {
             StringEntity body = new StringEntity("{\"state\": \"" + state + "\", " +
-                    "\"target_url\": \"https://citools.firebaseapp.com/builds/3\"," +
+                    "\"target_url\": \"https://citool.firebaseapp.com/builds/" +id + "\"," +
                     "\"description\": \"" + description + "\" ," +
                     "\"context\": \"continuous-integration\" }");
             String url = "https://api.github.com/repos/" + owner + "/" + repo + "/statuses/" + sha;
@@ -243,7 +259,8 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Creates the push classes: PullRequest, User, BuildResult, Data, Type
-     * @param request
+     * @param jsonString     - String, the json string from github
+     * @param responseScript - String[], the response from the build
      */
     public void createClassesPull(String jsonString, String[] responseScript){
         String action = "PULLREQUEST";
@@ -263,9 +280,9 @@ public class CIServer extends AbstractHandler {
 
     /**
      * Updates the database on firebase with either pull och push information
-     * @param type
-     * @param data
-     * @param jsonString
+     * @param type - Class Type in package Firebase
+     * @param data - Class Data in package Firebase
+     * @param jsonString - String, the json string from github
      */
     public void updateDatabase(Type type, Data data, String jsonString){
 
@@ -280,7 +297,7 @@ public class CIServer extends AbstractHandler {
             childPath = jsonString;
         }
 
-        dbAdmin.collection("builds").document(childPath).set(database);
+        //dbAdmin.collection("builds").document(childPath).set(database);
     }
 
     /**
@@ -309,6 +326,11 @@ public class CIServer extends AbstractHandler {
         return new BuildResult(exitCode, exitMessages, buildDateFormat.format(buildDate));
     }
 
+    /**
+     * Main method
+     * @param args - Inputs from compilation (if there are any)
+     * @throws Exception - Exception
+     */
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
     {
